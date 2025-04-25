@@ -26,7 +26,7 @@ dependencies = [
     # Tracking and Experimentation
     # "wandb",               # for logging and tracking experiments
     # "optuna>=3.4.0",       # for hyperparameter optimization
-    "langfuse>=2.59.7",    # tracking api calls and logs
+    # "langfuse>=2.59.7",    # tracking api calls and logs
 
     # Data Visualization
     # "matplotlib>=3.8.3",
@@ -39,10 +39,10 @@ dependencies = [
     # "tiktoken>=0.4.0",
 
     # AI Agents
-    "langgraph",
+    # "langgraph",
     "openai-agents",
-    "langchain>=0.3.20",
-    "langchain-openai>=0.3.8",
+    # "langchain>=0.3.20",
+    # "langchain-openai>=0.3.8",
     # "langchain-anthropic>=0.3.9",
 
     # Audio Processing
@@ -65,6 +65,7 @@ dependencies = [
     "notebook>=6.5.4",       # for Jupyter Notebook support
     "passlib[bcrypt]<2.0.0,>=1.7.4",
     "bcrypt==4.0.1",  # pin bcrypt until passlib supports the latest
+    # "opik",         # for opik
 
     # Databases including Vector Storage & Embeddings
     "chromadb>=0.4.24",
