@@ -32,7 +32,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 while True:
                     data = await websocket.receive_bytes()
                     await openai_ws.send(data)
-            except:
+            except Exception:
                 pass
 
         async def send_to_client():
@@ -40,7 +40,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 while True:
                     data = await openai_ws.recv()
                     await websocket.send_bytes(data)
-            except:
+            except Exception:
                 pass
 
         await asyncio.gather(receive_from_client(), send_to_client())
