@@ -4,8 +4,9 @@ import logging
 import traceback
 
 import websockets
-from ..config import API_KEY, VENDOR_WS_URL
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+
+from ..config import API_KEY, VENDOR_WS_URL
 
 realtime_router = APIRouter()
 
@@ -13,10 +14,6 @@ realtime_router = APIRouter()
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
 )
-
-# Headers configuration
-extra_headers = {"api-key": API_KEY}
-
 
 async def relay_messages(client_ws: WebSocket, vendor_ws):
     """Relay messages between client and vendor WebSockets."""
@@ -35,7 +32,6 @@ async def relay_messages(client_ws: WebSocket, vendor_ws):
             logging.info("Client WebSocket disconnected.")
         except Exception as e:
             print(traceback.format_exc())
-
             logging.error(f"Error in client_to_vendor: {e}")
 
     async def vendor_to_client():
@@ -47,7 +43,6 @@ async def relay_messages(client_ws: WebSocket, vendor_ws):
             logging.info(f"Vendor WebSocket disconnected: {e}")
         except Exception as e:
             print(traceback.format_exc())
-
             logging.error(f"Error in vendor_to_client: {e}")
 
     tasks = [
@@ -68,8 +63,11 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
 
     try:
+        # Create connection with headers
+        headers = {"Authorization": f"Bearer {API_KEY}"}
         async with websockets.connect(
-            VENDOR_WS_URL, extra_headers=extra_headers
+            VENDOR_WS_URL, 
+            extra_headers=headers
         ) as vendor_ws:
             logging.info("Connected to vendor WebSocket.")
             await relay_messages(websocket, vendor_ws)

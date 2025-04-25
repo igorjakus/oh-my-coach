@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from backend.routes.health_check import health_check_router
 from backend.routes.realtime import realtime_router
 
