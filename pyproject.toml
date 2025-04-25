@@ -35,7 +35,7 @@ dependencies = [
 
     # Natural Language Processing
     # "transformers>=4.38.1",
-    "openai>=1.12.0",
+    "openai[voice_helpers]>=1.12.0",
     # "tiktoken>=0.4.0",
 
     # AI Agents
