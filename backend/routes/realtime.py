@@ -10,10 +10,16 @@ from ..config import API_KEY, VENDOR_WS_URL
 
 realtime_router = APIRouter()
 
+
 # Set up logging
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
 )
+
+headers = {
+    "Authorization": f"Bearer {API_KEY}",
+    "OpenAI-Beta": "realtime=v1"
+}
 
 async def relay_messages(client_ws: WebSocket, vendor_ws):
     """Relay messages between client and vendor WebSockets."""
@@ -63,11 +69,9 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
 
     try:
-        # Create connection with headers
-        headers = {"Authorization": f"Bearer {API_KEY}"}
         async with websockets.connect(
             VENDOR_WS_URL, 
-            extra_headers=headers
+            additional_headers=headers
         ) as vendor_ws:
             logging.info("Connected to vendor WebSocket.")
             await relay_messages(websocket, vendor_ws)

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WebSocket Audio + Text Client</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; }
+    button { margin: 0.5rem 0; }
+    #messages { background:#f7f7f7; padding:0.5rem; height:200px; overflow:auto; }
+  </style>
+</head>
+<body>
+  <h1>WebSocket Audio + Text Client</h1>
+  <button id="connectButton">Connect to WebSocket</button>
+  <button id="startAudioButton" disabled>Start Mic</button>
+  <button id="stopAudioButton" disabled>Stop Mic</button>
+  <br><br>
+
+  <textarea id="messageInput"
+            placeholder="Enter your text message here..."
+            rows="3" cols="50"></textarea>
+  <br>
+  <button id="sendButton" disabled>Send Text</button>
+
+  <h2>Messages:</h2>
+  <pre id="messages"></pre>
+
+  <script>
+    let websocket;
+    let audioContext, micProcessor, micStream;
+
+    const connectButton     = document.getElementById('connectButton');
+    const startAudioButton  = document.getElementById('startAudioButton');
+    const stopAudioButton   = document.getElementById('stopAudioButton');
+    const sendButton        = document.getElementById('sendButton');
+    const messageInput      = document.getElementById('messageInput');
+    const messagesDisplay   = document.getElementById('messages');
+
+    // Konwersja Float32 → Int16 PCM little-endian
+    function floatTo16BitPCM(input) {
+      const output = new Int16Array(input.length);
+      for (let i = 0; i < input.length; i++) {
+        let s = Math.max(-1, Math.min(1, input[i]));
+        output[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+      }
+      return output;
+    }
+
+    // Konwersja Int16 PCM → Float32
+    function pcm16ToFloat32(input) {
+      const output = new Float32Array(input.length);
+      for (let i = 0; i < input.length; i++) {
+        output[i] = input[i] / (input[i] < 0 ? 0x8000 : 0x7FFF);
+      }
+      return output;
+    }
+
+    connectButton.addEventListener('click', () => {
+      websocket = new WebSocket('ws://localhost:8000/realtime');
+      websocket.binaryType = 'arraybuffer';
+
+      websocket.onopen = () => {
+        messagesDisplay.textContent += '🟢 Connected to WebSocket\n';
+        sendButton.disabled       = false;
+        startAudioButton.disabled = false;
+      };
+
+      websocket.onmessage = async (event) => {
+        // jeśli string → tekst
+        if (typeof event.data === 'string') {
+          messagesDisplay.textContent += 'Received (text): ' + event.data + '\n';
+          return;
+        }
+        // jeśli ArrayBuffer → audio
+        const buffer = event.data;
+        const int16  = new Int16Array(buffer);
+        const float32 = pcm16ToFloat32(int16);
+
+        if (!audioContext) {
+          audioContext = new AudioContext({ sampleRate: 24000 });
+        }
+        const audioBuf = audioContext.createBuffer(1, float32.length, 24000);
+        audioBuf.getChannelData(0).set(float32);
+
+        const src = audioContext.createBufferSource();
+        src.buffer  = audioBuf;
+        src.connect(audioContext.destination);
+        src.start();
+      };
+
+      websocket.onclose = () => {
+        messagesDisplay.textContent += '🔴 WebSocket closed\n';
+        sendButton.disabled       = true;
+        startAudioButton.disabled = true;
+        stopAudioButton.disabled  = true;
+      };
+
+      websocket.onerror = (err) => {
+        messagesDisplay.textContent += '❗ WebSocket error: ' + err.message + '\n';
+      };
+    });
+
+    sendButton.addEventListener('click', () => {
+      const msg = messageInput.value.trim();
+      if (!msg) return alert('Enter some text first');
+      websocket.send(JSON.stringify({ type: 'text', text: msg }));
+      messagesDisplay.textContent += 'Sent (text): ' + msg + '\n';
+      messageInput.value = '';
+    });
+
+    startAudioButton.addEventListener('click', async () => {
+      if (!websocket || websocket.readyState !== WebSocket.OPEN)
+        return alert('WebSocket not connected');
+
+      // inicjalizacja AudioContext i przechwytywanie mikrof.
+      audioContext = new AudioContext({ sampleRate: 24000 });
+      micStream    = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const source = audioContext.createMediaStreamSource(micStream);
+      micProcessor = audioContext.createScriptProcessor(4096, 1, 1);
+
+      source.connect(micProcessor);
+      micProcessor.connect(audioContext.destination);
+
+      micProcessor.onaudioprocess = e => {
+        const float32 = e.inputBuffer.getChannelData(0);
+        const pcm16   = floatTo16BitPCM(float32);
+        websocket.send(pcm16.buffer);
+      };
+
+      startAudioButton.disabled = true;
+      stopAudioButton.disabled  = false;
+      messagesDisplay.textContent += '🎙️ Mic ON\n';
+    });
+
+    stopAudioButton.addEventListener('click', () => {
+      if (micProcessor) {
+        micProcessor.disconnect();
+        micProcessor.onaudioprocess = null;
+      }
+      if (micStream) {
+        micStream.getTracks().forEach(t => t.stop());
+      }
+      stopAudioButton.disabled  = true;
+      startAudioButton.disabled = false;
+      messagesDisplay.textContent += '🛑 Mic OFF\n';
+    });
+  </script>
+</body>
+</html>
