@@ -35,36 +35,80 @@
     }
 
     .nickname-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-}
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+    }
 
-.nickname-box {
-  background-color: #2b2f34;
-  padding: 15px 50px 15px 15px;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1.2vw; /* skalowanie z szerokością */
-  width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+    .nickname-box {
+      background-color: #2b2f34;
+      padding: 15px 50px 15px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.2vw; /* skalowanie z szerokością */
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
 
-.profile-picture-left {
-  width: 50px;
-  height: 50px;
-  background-color: #3a3f45;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  right: -15px; /* Zmniejszono odstęp */
-  transform: translateY(-50%);
-  z-index: 2;
-  border: 3px solid #1d2227;
-}
+    .profile-picture-left {
+      width: 50px;
+      height: 50px;
+      background-color: #3a3f45;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      right: -15px; /* Zmniejszono odstęp */
+      transform: translateY(-50%);
+      z-index: 2;
+      border: 3px solid #1d2227;
+    }
 
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: #2b2f34;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      margin-top: 10px;
+      max-height: 1000; /* Maksymalna wysokość dla scrollowania */
+      overflow-y: auto; /* Włączenie scrollowania */
+      transition: all 0.3s ease;
+    }
+
+    .dropdown-item {
+      padding: 12px;
+      color: white;
+      cursor: pointer;
+      border-bottom: 1px solid #3a3f45;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .dropdown-item:hover {
+      background-color: #3a3f45;
+    }
+
+    .create-user-button {
+      padding: 12px;
+      color: white;
+      cursor: pointer;
+      text-align: center;
+      font-weight: bold;
+      background-color: #5a5f66;
+      border-radius: 8px;
+      border-top: 1px solid #3a3f45;
+      transition: background-color 0.3s ease;
+    }
+
+    .create-user-button:hover {
+      background-color: #3a3f45;
+    }
 
     .middle-panel {
       width: 50%;
@@ -112,10 +156,6 @@
       background-color: #3a3f45;
     }
 
-    .hidden {
-      display: none;
-    }
-
     /* Mobile responsiveness */
     @media (max-width: 768px) {
       .main {
@@ -141,8 +181,13 @@
     <!-- Lewa kolumna -->
     <div class="left-panel">
       <div class="nickname-wrapper">
-        <div class="nickname-box">SKURWYSYN</div>
+        <div class="nickname-box" onclick="toggleDropdown()">SKURWYSYN</div>
         <div class="profile-picture-left"></div>
+        <div class="dropdown" id="userDropdown">
+          <!-- Dropdown items will be injected here -->
+          <!-- Hardcoded "Create New User" button -->
+          <div class="create-user-button" onclick="redirectToCreateUser()">Create New User</div>
+        </div>
       </div>
     </div>
 
@@ -164,13 +209,78 @@
   </div>
 
   <script>
-    function showView(viewId) {
-      const views = ['chatView', 'goalsView', 'retroView', 'progressView'];
-      views.forEach(id => {
-        document.getElementById(id)?.classList.add('hidden');
-      });
-      document.getElementById(viewId)?.classList.remove('hidden');
+    // Toggles the visibility of the dropdown menu
+    function toggleDropdown() {
+      const dropdown = document.getElementById('userDropdown');
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+
+      // Fetch users when dropdown is shown
+      if (dropdown.style.display === 'block') {
+        fetchUsers();
+      }
     }
+
+    // Fetches user list from the backend
+    function fetchUsers() {
+      fetch('https://your-backend-endpoint.com/users')  // Replace with your actual endpoint
+        .then(response => response.json())
+        .then(data => {
+          const dropdown = document.getElementById('userDropdown');
+          
+          // Clear any previous items except for the "Create New User" button
+          const createButton = dropdown.querySelector('.create-user-button');
+          dropdown.innerHTML = '';  // Clear any previous items
+          dropdown.appendChild(createButton); // Re-append the create button
+
+          // Add users to the dropdown
+          data.users.forEach(user => {
+            const item = document.createElement('div');
+            item.className = 'dropdown-item';
+            item.textContent = user.name;  // Assuming 'name' is a property of the user
+            dropdown.appendChild(item);
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching users:', error);
+        });
+    }
+
+    // Redirect to the user creation page
+    function redirectToCreateUser() {
+      window.location.href = '/create-user';  // Replace with your actual user creation page URL
+    }
+
+    // Close the dropdown if clicked outside of it
+    document.addEventListener('click', (event) => {
+      const dropdown = document.getElementById('userDropdown');
+      if (!dropdown.contains(event.target) && event.target !== document.querySelector('.nickname-box')) {
+        dropdown.style.display = 'none';
+      }
+    });
+    
+    function adjustDropdownHeight() {
+    const dropdown = document.getElementById('userDropdown');
+    const navbar = document.querySelector('.footer');
+    const dropdownButton = document.querySelector('.nickname-box');
+  
+    // Obliczanie pozycji końca przycisku dropdowna
+    const dropdownButtonRect = dropdownButton.getBoundingClientRect();
+    const navbarHeight = navbar.offsetHeight;
+    const dropdownButtonBottom = dropdownButtonRect.bottom;  // Wysokość końca przycisku dropdowna
+
+    // Obliczanie dostępnej wysokości na dropdown
+    const availableHeight = window.innerHeight - dropdownButtonBottom - navbarHeight - 10;  // 10px marginesu
+  
+    // Ustawianie max-height na podstawie dostępnej przestrzeni
+    dropdown.style.maxHeight = `${availableHeight}px`;
+    }
+
+    // Wywołanie funkcji, aby ustawić odpowiednią wysokość na początku
+    window.addEventListener('load', adjustDropdownHeight);
+
+    // Dopasowanie wysokości przy zmianie rozmiaru okna
+    window.addEventListener('resize', adjustDropdownHeight);
+
   </script>
 
 </body>
