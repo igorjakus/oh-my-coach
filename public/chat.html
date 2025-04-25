@@ -1,20 +1,287 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oh my coach! - chat</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trójkolumnowy Layout</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #1d2227;
+      font-family: Arial, sans-serif;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .left-panel {
+      width: 25%;
+      padding: 20px;
+      position: relative;
+      background-color: #1d2227;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .nickname-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .nickname-box {
+      background-color: #2b2f34;
+      padding: 15px 50px 15px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.2vw; /* skalowanie z szerokością */
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+
+    .profile-picture-left {
+      width: 50px;
+      height: 50px;
+      background-color: #3a3f45;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      right: -15px; /* Zmniejszono odstęp */
+      transform: translateY(-50%);
+      z-index: 2;
+      border: 3px solid #1d2227;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: #2b2f34;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      margin-top: 10px;
+      max-height: 1000; /* Maksymalna wysokość dla scrollowania */
+      overflow-y: auto; /* Włączenie scrollowania */
+      transition: all 0.3s ease;
+    }
+
+    .dropdown-item {
+      padding: 12px;
+      color: white;
+      cursor: pointer;
+      border-bottom: 1px solid #3a3f45;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .dropdown-item:hover {
+      background-color: #3a3f45;
+    }
+
+    .create-user-button {
+      padding: 12px;
+      color: white;
+      cursor: pointer;
+      text-align: center;
+      font-weight: bold;
+      background-color: #5a5f66;
+      border-radius: 8px;
+      border-top: 1px solid #3a3f45;
+      transition: background-color 0.3s ease;
+    }
+
+    .create-user-button:hover {
+      background-color: #3a3f45;
+    }
+
+    .middle-panel {
+      width: 50%;
+      background-color: #2b2f34;
+    }
+
+    .right-panel {
+      width: 25%;
+      background-color: #1d2227;
+      position: relative;
+    }
+
+    .profile-picture-right {
+      width: 60px;
+      height: 60px;
+      background-color: #5a5f66;
+      border-radius: 50%;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 2;
+      border: 3px solid #2b2f34;
+    }
+
+    .footer {
+      height: 50px;
+      background-color: #2b2f34;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid #3a3f45;
+    }
+
+    .footer div {
+      flex: 1;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 10px 0;
+      transition: background-color 0.3s;
+    }
+
+    .footer div:hover {
+      background-color: #3a3f45;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .main {
+        flex-direction: column;
+      }
+      .left-panel,
+      .middle-panel,
+      .right-panel {
+        width: 100%;
+      }
+      .nickname-box {
+        font-size: 4vw;
+      }
+      .profile-picture-left {
+        right: 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="content">
+
+  <div class="main">
+    <!-- Lewa kolumna -->
+    <div class="left-panel">
+      <div class="nickname-wrapper">
+        <div class="nickname-box" onclick="toggleDropdown()">SKURWYSYN</div>
+        <div class="profile-picture-left"></div>
+        <div class="dropdown" id="userDropdown">
+          <!-- Dropdown items will be injected here -->
+          <!-- Hardcoded "Create New User" button -->
+          <div class="create-user-button" onclick="redirectToCreateUser()">Create New User</div>
+        </div>
+      </div>
     </div>
-    <div class="nabvar">
-        <div class="navbar-btn">CHAT</div>
-        <div class="navbar-btn">GOALS</div>
-        <div class="navbar-btn">RETRO</div>
-        <div class="navbar-btn">PROGRESS</div>
+
+    <!-- Środkowa kolumna -->
+    <div class="middle-panel"></div>
+
+    <!-- Prawa kolumna -->
+    <div class="right-panel">
+      <div class="profile-picture-right"></div>
     </div>
+  </div>
+
+  <!-- Navbar -->
+  <div class="footer">
+    <div onclick="showView('chatView')">CHAT</div>
+    <div onclick="showView('goalsView')">GOALS</div>
+    <div onclick="showView('retroView')">RETRO</div>
+    <div onclick="showView('progressView')">PROGRESS</div>
+  </div>
+
+  <script>
+    // Toggles the visibility of the dropdown menu
+    function toggleDropdown() {
+      const dropdown = document.getElementById('userDropdown');
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+
+      // Fetch users when dropdown is shown
+      if (dropdown.style.display === 'block') {
+        fetchUsers();
+      }
+    }
+
+    // Fetches user list from the backend
+    function fetchUsers() {
+      fetch('https://your-backend-endpoint.com/users')  // Replace with your actual endpoint
+        .then(response => response.json())
+        .then(data => {
+          const dropdown = document.getElementById('userDropdown');
+          
+          // Clear any previous items except for the "Create New User" button
+          const createButton = dropdown.querySelector('.create-user-button');
+          dropdown.innerHTML = '';  // Clear any previous items
+          dropdown.appendChild(createButton); // Re-append the create button
+
+          // Add users to the dropdown
+          data.users.forEach(user => {
+            const item = document.createElement('div');
+            item.className = 'dropdown-item';
+            item.textContent = user.name;  // Assuming 'name' is a property of the user
+            dropdown.appendChild(item);
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching users:', error);
+        });
+    }
+
+    // Redirect to the user creation page
+    function redirectToCreateUser() {
+      window.location.href = '/create-user';  // Replace with your actual user creation page URL
+    }
+
+    // Close the dropdown if clicked outside of it
+    document.addEventListener('click', (event) => {
+      const dropdown = document.getElementById('userDropdown');
+      if (!dropdown.contains(event.target) && event.target !== document.querySelector('.nickname-box')) {
+        dropdown.style.display = 'none';
+      }
+    });
+    
+    function adjustDropdownHeight() {
+    const dropdown = document.getElementById('userDropdown');
+    const navbar = document.querySelector('.footer');
+    const dropdownButton = document.querySelector('.nickname-box');
+  
+    // Obliczanie pozycji końca przycisku dropdowna
+    const dropdownButtonRect = dropdownButton.getBoundingClientRect();
+    const navbarHeight = navbar.offsetHeight;
+    const dropdownButtonBottom = dropdownButtonRect.bottom;  // Wysokość końca przycisku dropdowna
+
+    // Obliczanie dostępnej wysokości na dropdown
+    const availableHeight = window.innerHeight - dropdownButtonBottom - navbarHeight - 10;  // 10px marginesu
+  
+    // Ustawianie max-height na podstawie dostępnej przestrzeni
+    dropdown.style.maxHeight = `${availableHeight}px`;
+    }
+
+    // Wywołanie funkcji, aby ustawić odpowiednią wysokość na początku
+    window.addEventListener('load', adjustDropdownHeight);
+
+    // Dopasowanie wysokości przy zmianie rozmiaru okna
+    window.addEventListener('resize', adjustDropdownHeight);
+
+  </script>
+
 </body>
 </html>
