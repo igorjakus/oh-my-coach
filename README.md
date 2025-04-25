@@ -47,8 +47,9 @@ pre-commit install
 docker compose up
 ```
 
-## Development resources
+## Development resources & Acknowledgments
 [Database diagrams](https://dbdiagram.io/)
 [Full-Stack FastAPI Template](https://github.com/fastapi/full-stack-fastapi-template)
 [Hackathon-Starter](https://github.com/Kabanosk/hackathon-starter/) - this repo is heavily inspired by this:)
 [Hackathon-Booster](https://github.com/igorjakus/hackathon-booster/)
+[OpenAI-Realtime-FastAPI](https://github.com/Geo-Joy/openai-realtime-fastapi)
