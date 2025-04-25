@@ -1,0 +1,95 @@
+[project]
+name = "oh-my-coach"
+version = "0.1.0"
+description = "Agentic AI coach that helps you achive and even go beyond your goals!"
+readme = "README.md"
+authors = [
+    { name = "Igor Jakus", email = "igorjakus@protonmail.com" }  
+    # TODO: Janek
+    # TODO: Antek
+    # TODO: Bartek
+    # TODO: Dominik
+]
+
+requires-python = ">=3.12"
+
+# Comment out any dependencies you don't need for your project
+# For example, if you don't need computer vision support, comment out opencv-python and pillow
+dependencies = [
+    # Core AI and ML
+    # "torch>=2.2.0",
+    # "pandas>=2.2.3",
+    # "numpy>=1.26.0",
+    # "scipy>=1.12.0",
+    # "scikit-learn>=1.3.2",
+
+    # Tracking and Experimentation
+    # "wandb",               # for logging and tracking experiments
+    # "optuna>=3.4.0",       # for hyperparameter optimization
+    "langfuse>=2.59.7",    # tracking api calls and logs
+
+    # Data Visualization
+    # "matplotlib>=3.8.3",
+    # "seaborn>=0.13.2",
+    # "plotly>=5.19.0",
+
+    # Natural Language Processing
+    # "transformers>=4.38.1",
+    "langchain>=0.3.20",
+    "langchain-openai>=0.3.8",
+    # "langchain-anthropic>=0.3.9",
+    "openai>=1.12.0",
+    "tiktoken>=0.4.0",
+    "langgraph",
+
+    # Audio Processing
+    "openai-whisper",
+    "ffmpeg-python>=0.2.0",      # required for Whisper audio processing
+
+    # Computer Vision
+    # "opencv-python>=4.9.0.80",
+    # "pillow>=10.2.0",
+
+    # API Development
+    "fastapi[standard]>=0.110.0",
+    "uvicorn>=0.27.1",
+
+    # Utils
+    "pydantic>=1.10.12",
+    "loguru>=0.7.3",
+    # "tqdm>=4.66.0",
+    "python-dotenv>=1.0.0",
+    "notebook>=6.5.4",       # for Jupyter Notebook support
+    "passlib[bcrypt]<2.0.0,>=1.7.4",
+    "bcrypt==4.0.1",  # pin bcrypt until passlib supports the latest
+
+    # Databases including Vector Storage & Embeddings
+    "chromadb>=0.4.24",
+    "sentence-transformers>=2.4.0",  # for generating embeddings
+    # "pgcli>=4.3.0",
+    # "sqlmodel>=0.0.24",
+    # "sqlalchemy",
+    # "psycopg"
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.1.0", # for pre-commit hooks
+    "pytest>=8.3.5",     # for testing
+    "ruff>=0.11.0",      # for linting and formatting
+    "mypy>=1.15.0",      # for static type checking
+]
+
+[tool.ruff]
+line-length = 120
+fix = true
+force-exclude = true  # useful for pre-commit hooks https://docs.astral.sh/ruff/settings/#force-exclude
+
+[tool.ruff.lint]
+extend-select = ["I"]              # isort
+ignore = ["E111", "E114", "E117"]  # don't enforce specific indentation
+
+[tool.mypy]
+ignore_missing_imports = true
+no_error_summary = true
+# strict = true
