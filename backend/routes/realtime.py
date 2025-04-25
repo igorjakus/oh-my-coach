@@ -4,7 +4,7 @@ import logging
 import traceback
 
 import websockets
-from app.config import API_KEY, USE_AZURE_OPENAI, VENDOR_WS_URL
+from ..config import API_KEY, VENDOR_WS_URL
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 realtime_router = APIRouter()
@@ -14,15 +14,8 @@ logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-# Determine appropriate headers
-extra_headers = (
-    {
-        "Authorization": f"Bearer {API_KEY}",
-        "openai-beta": "realtime=v1",
-    }
-    if USE_AZURE_OPENAI
-    else {"api-key": API_KEY}
-)
+# Headers configuration
+extra_headers = {"api-key": API_KEY}
 
 
 async def relay_messages(client_ws: WebSocket, vendor_ws):
