@@ -1,7 +1,30 @@
-/.DS_Store
-/Dockerfile
-/LICENSE
-/README.md
-/docker-compose.yml
-/examples
-/uv.lock
+# Ignore all Python bytecode files
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# python virtual environment directory
+.venv/
+
+# environment variables
+.env
+
+# cache
+.cache/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# macos shit files
+.DS_Store
+
+# vscode shit files
+.vscode
+
+# idk maybe it shouldn't be in .gitignore???
+uv.lock

@@ -1,7 +1,7 @@
 [project]
 name = "oh-my-coach"
 version = "0.1.0"
-description = "Agentic AI coach that helps you achive and even go beyond your goals!"
+description = "Agentic AI coach that helps you crush your goals — and go beyond!"
 readme = "README.md"
 authors = [
     { name = "Igor Jakus", email = "igorjakus@protonmail.com" }  
