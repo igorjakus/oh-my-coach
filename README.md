@@ -9,8 +9,6 @@ Example `.env` file:
 ```env
 # API Keys
 OPENAI_API_KEY=your_openai_api_key
-ANTHROPIC_API_KEY=your_anthropic_api_key
-WANDB_API_KEY=your_wandb_api_key
 
 # Database Configuration (optional - default values shown)
 POSTGRES_USER=hackathon
