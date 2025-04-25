@@ -28,3 +28,6 @@ build/
 
 # idk maybe it shouldn't be in .gitignore???
 uv.lock
+
+Dockerfile
+docker-compose.yml

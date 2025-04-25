@@ -11,7 +11,7 @@ authors = [
     # TODO: Dominik
 ]
 
-requires-python = ">=3.12"
+requires-python = "==3.12.4"
 
 # Comment out any dependencies you don't need for your project
 # For example, if you don't need computer vision support, comment out opencv-python and pillow
