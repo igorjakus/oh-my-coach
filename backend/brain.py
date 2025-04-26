@@ -129,20 +129,6 @@ Based on the user's intent, route to:
 )
 
 
-async def test_queries():
-    examples = [
-        # "24342423?",  # versatile agent test
-        "Ooh i've got money to spend! What can I buy?",  # Advisor agent test
-        # "Hmmm, what about duck hunting gear - what's trending right now?",  # Search Agent test
-    ]
-
-    with trace("Coach App"):
-        for query in examples:
-            result = await Runner.run(triage_agent, query)
-            print(f"User: {query}")
-            print(f"Answer: {result.final_output}")
-            print("---")
-
 
 async def generate_task(goal_id: int, previous_tasks: list[Task]) -> Task:
     """
@@ -168,6 +154,21 @@ async def generate_task(goal_id: int, previous_tasks: list[Task]) -> Task:
         )
         
         return result.final_output  # task_manager_agent will return Task object since we set output_type=Task
+
+
+async def test_queries():
+    examples = [
+        # "24342423?",  # versatile agent test
+        "Ooh i've got money to spend! What can I buy?",  # Advisor agent test
+        # "Hmmm, what about duck hunting gear - what's trending right now?",  # Search Agent test
+    ]
+
+    with trace("Coach App"):
+        for query in examples:
+            result = await Runner.run(triage_agent, query)
+            print(f"User: {query}")
+            print(f"Answer: {result.final_output}")
+            print("---")
 
 
 if __name__ == "__main__":
