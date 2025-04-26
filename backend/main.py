@@ -6,10 +6,10 @@ from fastapi.staticfiles import StaticFiles
 from backend.config import create_db_and_tables
 from backend.routes.chat import chat_router
 from backend.routes.health_check import health_check_router
+from backend.routes.maintenance import maintenance_router
 from backend.routes.personalisation import personalization_router
 from backend.routes.staticFiles import router as StaticFiles_router
 from backend.routes.tasks import task_router
-from backend.routes.maintenance import maintenance_router
 
 app = FastAPI()
 
