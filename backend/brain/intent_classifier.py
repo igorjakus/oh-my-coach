@@ -26,10 +26,12 @@ task_intent_agent = Agent(
     name="Task Intent Classifier",
     instructions=(
         "You are a classifier that determines if a user's message is a task for an existing goal. "
-        "Return a JSON object with a single integer field 'goal_id' which is the goal ID if the message is a task for one of the existing goals, otherwise -1."
+        "Analyze the message and the list of existing goals. "
+        "If the message is clearly about creating a task for one of the listed goals, return that goal's ID. "
+        "Otherwise return -1. "
+        "Your response must be a JSON object with a single field 'goal_id' containing this integer."
     ),
-    model="gpt-4.1",
-    model_settings={"temperature": 0.0},  # deterministic output
+    output_type=TaskIntentOutput
 )
 
 # Creating an agent for classifying intent to create a new goal
@@ -39,12 +41,14 @@ goal_intent_agent = Agent(
         "You are a classifier that determines if a user's message expresses intent to create a new goal. "
         "Return a JSON object with a single boolean field 'is_new_goal' which is true if intent exists, otherwise false."
     ),
-    model="gpt-4.1",
-    model_settings={"temperature": 0.0},  # deterministic output
+    output_type=GoalIntentOutput
 )
 
-# Function to check if the message is a task for an existing goal
 async def check_task_intent(message: str) -> int:
+    """
+    Checks if the message is intended to be a task for an existing goal.
+    Returns the goal ID if it is, -1 otherwise.
+    """
     goals = get_existing_goals()
     if not goals:
         return -1
@@ -54,29 +58,46 @@ async def check_task_intent(message: str) -> int:
         for goal in goals
     ])
 
-    completion = await Runner.run(
-        task_intent_agent,
-        f"Existing goals:\n{goals_context}\n\nUser message: {message}\n\nReturn the JSON object as specified.",
-        text_format=TaskIntentOutput,
-    )
+    try:
+        result = await Runner.run(
+            task_intent_agent,
+            f"""Analyze if this message is meant to create a task for one of these goals:
 
-    response = completion.final_output_parsed
-    goal_id = response.goal_id
+{goals_context}
 
-    # Validate if goal_id is in known goals or -1
-    valid_goal_ids = [goal.id for goal in goals]
-    if goal_id != -1 and goal_id not in valid_goal_ids:
-        return -1
+User message: "{message}"
 
-    return goal_id
+Return the goal_id if this is clearly a task for that goal, or -1 if not."""
+        )
 
-# Function to check if the message expresses intent to create a new goal
+        if hasattr(result, 'final_output') and isinstance(result.final_output, TaskIntentOutput):
+            goal_id = result.final_output.goal_id
+            # Validate if goal_id exists
+            if goal_id != -1 and goal_id in [goal.id for goal in goals]:
+                return goal_id
+    except Exception as e:
+        print(f"Error in check_task_intent: {str(e)}")
+    
+    return -1
+
 async def check_goal_intent(message: str) -> bool:
-    completion = await Runner.run(
-        goal_intent_agent,
-        f"User message: {message}\n\nReturn the JSON object as specified.",
-        text_format=GoalIntentOutput,
-    )
+    """
+    Checks if the message expresses intent to create a new goal.
+    Returns True if it does, False otherwise.
+    """
+    try:
+        result = await Runner.run(
+            goal_intent_agent,
+            f"""Determine if this message expresses an intent to create a new goal:
 
-    response = completion.final_output_parsed
-    return response.is_new_goal
+User message: "{message}"
+
+Return is_new_goal=true only if this clearly indicates wanting to create a new goal."""
+        )
+
+        if hasattr(result, 'final_output') and isinstance(result.final_output, GoalIntentOutput):
+            return result.final_output.is_new_goal
+    except Exception as e:
+        print(f"Error in check_goal_intent: {str(e)}")
+    
+    return False

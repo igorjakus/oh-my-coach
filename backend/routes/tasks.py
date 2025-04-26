@@ -1,9 +1,12 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 from sqlmodel import Session, delete, select
 
 from backend.brain import generate_task
+from backend.brain.goal_creator import create_goal_from_prompt
+from backend.brain.task_creator import create_task_from_prompt
 from backend.config import engine
 from backend.models import Goal, GoalCreate, GoalRead, Task, TaskCreate, TaskRead
 
@@ -14,6 +17,11 @@ task_router = APIRouter()
 def get_session():
     with Session(engine) as session:
         yield session
+
+
+# New request models for natural language endpoints
+class NLPrompt(BaseModel):
+    prompt: str
 
 
 # ========== ENDPOINTS ==============
@@ -84,6 +92,11 @@ async def create_goal(goal: GoalCreate, session: Session = Depends(get_session))
     session.commit()
     session.refresh(db_goal)
     return db_goal
+
+@task_router.post("/goals/from-prompt", response_model=GoalRead)
+async def create_goal_nl(prompt: NLPrompt, session: Session = Depends(get_session)):
+    """Create a new goal from natural language prompt"""
+    return await create_goal_from_prompt(prompt.prompt, session)
 
 @task_router.post("/goals/{goal_id}/next-task", response_model=TaskRead)
 async def go_to_next_task(goal_id: int, session: Session = Depends(get_session)):
@@ -162,6 +175,11 @@ async def create_task_manually(goal_id: int, task: TaskCreate, session: Session 
     session.commit()
     session.refresh(db_task)
     return db_task
+
+@task_router.post("/goals/{goal_id}/tasks/from-prompt", response_model=TaskRead)
+async def create_task_nl(goal_id: int, prompt: NLPrompt, session: Session = Depends(get_session)):
+    """Create a new task from natural language prompt"""
+    return await create_task_from_prompt(goal_id, prompt.prompt, session)
 
 
 # ==== DELETE ENDPOINTS ====

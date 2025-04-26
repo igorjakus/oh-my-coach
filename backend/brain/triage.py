@@ -2,7 +2,6 @@ from agents import Agent, Runner
 from agents.extensions.handoff_prompt import prompt_with_handoff_instructions
 from fastapi import HTTPException
 
-from backend.brain.goal_creator import goal_manager_agent
 from backend.brain.subagents import (
     coach_agent,
     dreamer_agent,
@@ -16,7 +15,6 @@ from backend.brain.subagents import (
     trainer_agent,
     versatile_agent,
 )
-from backend.brain.task_creator import task_manager_agent
 
 triage_agent = Agent(
     name="Coach",
@@ -46,8 +44,6 @@ triage_agent = Agent(
         dreamer_agent,
         nutritionist_agent,
         entertainer_agent,
-        task_manager_agent,
-        goal_manager_agent,
         versatile_agent,
         expert_agent,
     ],
@@ -67,18 +63,28 @@ async def get_response_from_best_agent(query: str) -> str:
     else:
         raise HTTPException(status_code=500, detail="No suitable agent found")
 
-async def get_best_response(query: str, personalised_agent) -> str:
+async def get_personalised_response(query: str, personalised_agent: Agent) -> str:
     """
     Get a response from the personalised agent based on the query.
+    First gets response from best agent, then personalizes it.
     Args:
         query: User's query
         personalised_agent: Personalised agent to get response from
     Returns:
-        str: Response from the personalised agent
+        str: Personalized response
     """
-    query = await get_response_from_best_agent(query)
-    result = await Runner.run(personalised_agent, query)
+    # First get response from best agent
+    base_response = await get_response_from_best_agent(query)
+    
+    # Then personalize the response
+    prompt = f"""Original user query: {query}
+Base response: {base_response}
+
+Please rephrase this response in your personal style while maintaining the key information."""
+
+    result = await Runner.run(personalised_agent, prompt)
     if result.final_output:
         return result.final_output
     else:
-        raise HTTPException(status_code=500, detail="No suitable agent found")
+        # If personalization fails, return the base response
+        return base_response
