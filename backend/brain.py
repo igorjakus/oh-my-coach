@@ -1,4 +1,3 @@
-import asyncio
 from typing import Optional
 
 from agents import Agent, Runner, WebSearchTool, set_default_openai_key, trace
@@ -170,22 +169,3 @@ def get_response_from_best_agent(
         return result.final_output
     else:
         raise HTTPException(status_code=500, detail="No suitable agent found")
-
-
-async def test_queries():
-    examples = [
-        # "24342423?",  # versatile agent test
-        "Ooh i've got money to spend! What can I buy?",  # Advisor agent test
-        # "Hmmm, what about duck hunting gear - what's trending right now?",  # Search Agent test
-    ]
-
-    with trace("Coach App"):
-        for query in examples:
-            result = await Runner.run(triage_agent, query)
-            print(f"User: {query}")
-            print(f"Answer: {result.final_output}")
-            print("---")
-
-
-if __name__ == "__main__":
-    asyncio.run(test_queries())
