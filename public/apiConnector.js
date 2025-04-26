@@ -65,6 +65,7 @@ async function CreatePersonas(personaJSON)
         method: 'POST',
         headers: {
             // No Content-Type needed for query parameters in POST
+            'Content-Type': 'application/json'
         }
         // Body is not needed as parameters are in the URL
     })
