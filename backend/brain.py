@@ -56,6 +56,7 @@ entertainer_agent = create_agent(
     instructions="You are supposed to entertain the user. You can do this by recommending movies, books, games ect. based on their story, maybe by asking additional questions.",
 )
 
+
 # Define a simplified Task model for the agent without defaults
 class AgentTask(BaseModel):
     name: str
@@ -65,16 +66,18 @@ class AgentTask(BaseModel):
 
 
 task_manager_agent = create_agent(
-    name="task_manager_agent", 
+    name="task_manager_agent",
     instructions="""You are a task generation expert that helps break down goals into actionable tasks. 
+    Tasks should be diverse and be focused on exploring new ideas about the topic rather than reviewing.
+
     For each task, you should provide:
     - A clear, concise name
     - A detailed description explaining what needs to be done
     - An estimated duration in minutes
     - A priority level from 1 (lowest) to 5 (highest) based on task importance
-    
+
     Consider the context of previous tasks when generating new ones to ensure proper task sequencing.
-    Tasks should be concrete, measurable, and help directly progress towards the goal.""", 
+    Apply pareto rule.""",
     output_type=AgentTask
 )
 goal_manager_agent = create_agent(name="goal_manager_agent", instructions="You are giving goals.", output_type=Goal)
@@ -125,7 +128,6 @@ Based on the user's intent, route to:
 )
 
 
-
 async def generate_task(goal_id: int, previous_tasks: list[Task]) -> Task:
     """
     Generate a task based on the goal using task_manager_agent.
@@ -139,21 +141,22 @@ async def generate_task(goal_id: int, previous_tasks: list[Task]) -> Task:
         goal = session.get(Goal, goal_id)
         if not goal:
             raise HTTPException(status_code=404, detail="Goal not found")
-        
+
         context = f"Goal: {goal.name}\nDescription: {goal.description}\n"
         if previous_tasks:
-            context += "\nPrevious tasks:\n" + "\n".join([f"- {task.name}: {task.description}" for task in previous_tasks])
-        
+            context += "\nPrevious tasks:\n" + "\n".join(
+                [f"- {task.name}: {task.description}" for task in previous_tasks])
+
         result = await Runner.run(
             task_manager_agent,
             f"Generate the next task for this goal: {context}"
         )
-        
+
         return result.final_output  # task_manager_agent will return Task object since we set output_type=Task
 
 
 def get_response_from_best_agent(
-    query: str,
+        query: str,
 ) -> str:
     """
     Get a response from the best agent based on the query.
