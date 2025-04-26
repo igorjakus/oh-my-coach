@@ -75,9 +75,19 @@ Need to clear your head? The **Retro** view allows you to talk to your agent usi
 
 ### How we built it
 
-### Challenges we ran into
+- **Python** for backend and **???** for frontend.
 
-### What we learned
+### Challenges We Ran Into
+
+**User Simplicity**: Balancing a clean, user-friendly interface with the depth of features we wanted to include was a significant design challenge.
+
+**Custom Prompting**: Crafting precise and effective prompts was essential for guiding the AI to produce meaningful and context-aware responses.
+
+### What We Learned
+
+**New Technologies**: We gained hands-on experience with OpenAI’s Responses API and the new Agent SDK, which were central to building our app’s intelligence.
+
+**Collaboration**: Strong teamwork and clear communication helped us overcome technical and creative challenges throughout the project.
 
 ### What's next for Oh My Coach
 
