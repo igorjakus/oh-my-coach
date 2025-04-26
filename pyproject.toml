@@ -4,11 +4,11 @@ version = "0.1.0"
 description = "Agentic AI coach that helps you crush your goals — and go beyond!"
 readme = "README.md"
 authors = [
-    { name = "Igor Jakus", email = "igorjakus@protonmail.com" }  
-    # TODO: Janek
-    # TODO: Antek
-    # TODO: Bartek
-    # TODO: Dominik
+    { name = "Igor Jakus", email = "igorjakus@protonmail.com" }
+    { name = "Jan Burdzicki", email = "janburdzicki@gmail.com" }
+    { name = "Dominik Biernacki", email = "dooooominik@wp.pl" }
+    { name = "Antoni Goles", email = "antonigoles@gmail.com" }
+    { name = "Bartosz Kebel", email = "bartosz.kebel@gmail.com" }
 ]
 
 requires-python = "==3.12.4"
