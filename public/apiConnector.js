@@ -44,7 +44,7 @@ function GetTaskInGoal(goalId)
 }
 
 
-function CreatePersonas(personaJSON)
+async function CreatePersonas(personaJSON)
 {
     // Construct query parameters from the personaJSON object
     const queryParams = new URLSearchParams({
@@ -61,13 +61,11 @@ function CreatePersonas(personaJSON)
         feedback_type: personaJSON.feedbackType || 'constructive' // Default if not provided
     }).toString();
 
-    return fetch(`http://localhost:8000/personalization/create_agent?${queryParams}`, {
+    return await fetch(`http://localhost:8000/personalization/create_agent?${queryParams}`, {
         method: 'POST',
         headers: {
             // No Content-Type needed for query parameters in POST
         }
         // Body is not needed as parameters are in the URL
     })
-    .then(response => response.json())
-    .catch(error => console.error('Error:', error));
 }
