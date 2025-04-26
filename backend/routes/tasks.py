@@ -167,12 +167,3 @@ async def delete_goal(goal_id: int, session: Session = Depends(get_session)):
     session.exec(select(Task).where(Task.goal_id == goal_id)).delete()
     session.commit()
     return {"ok": True}
-
-
-@task_router.delete("/")
-async def clear_database(session: Session = Depends(get_session)):
-    """Clear the database"""
-    session.exec(delete(Task))
-    session.exec(delete(Goal))
-    session.commit()
-    return {"ok": True}
