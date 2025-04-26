@@ -1,5 +1,6 @@
 import asyncio
 import os
+from dataclasses import dataclass
 
 from agents import Agent, Runner, WebSearchTool, function_tool, set_default_openai_key, trace
 from agents.extensions.handoff_prompt import prompt_with_handoff_instructions
@@ -14,9 +15,21 @@ set_default_openai_key(api_key)
 client = OpenAI(api_key=api_key)
 
 
+@dataclass
+class Goal(BaseModel):
+    title: str
+    description: str
+    duration: int
+    priority: int
+
+
+@dataclass
 class Task(BaseModel):
     name: str
     description: str
+    duration: int
+    goal: str
+    priority: int
 
 
 @function_tool
@@ -30,8 +43,8 @@ def get_account_info(user_id: str) -> dict:
     }
 
 
-def create_agent(name="", model="gpt-4.1", instructions="", tools=[]):
-    return Agent(name=name, model=model, instructions=(instructions), tools=tools)
+def create_agent(name="", model="gpt-4.1", instructions="", tools=[], output_type=None):
+    return Agent(name=name, model=model, instructions=(instructions), tools=tools, output_type=output_type)
 
 
 friend_agent = create_agent(name="friend_agent", instructions="")
@@ -48,7 +61,7 @@ financial_advisor_agent = create_agent(
     name="financial_advisor_agent", instructions=""
 )  # TODO: raczej do wyrzucenia -> jest advisor
 entertainer_agent = create_agent(name="entertainer_agent", instructions="")
-task_manager_agent = create_agent(name="task_manager_agent", instructions="")
+task_manager_agent = create_agent(name="task_manager_agent", instructions="You provide tasks.", output_type=Task)
 goal_manager_agent = create_agent(name="goal_manager_agent", instructions="")
 listener_agent = create_agent(
     name="listener_agent", instructions=""
@@ -75,6 +88,7 @@ Based on the user's intent, route to:
 - versatile_agent for any unrealated queries, just continue the conversation
 - advisor_agent for giving advices
 - expert_agent for anything requiring real-time web search
+- task_manager_agent for giving tasks
 """),
     handoffs=[
         friend_agent,
@@ -102,9 +116,10 @@ Based on the user's intent, route to:
 
 async def test_queries():
     examples = [
-        "24342423?",  # versatile agent test
-        "Ooh i've got money to spend! What can I buy?",  # Advisor agent test
-        "Hmmm, what about duck hunting gear - what's trending right now?",  # Search Agent test
+        # "24342423?",  # versatile agent test
+        # "Ooh i've got money to spend! What can I buy?",  # Advisor agent test
+        # "Hmmm, what about duck hunting gear - what's trending right now?",  # Search Agent test
+        "Give me tasks for learn AI",  # Task manager agent test
     ]
 
     with trace("Coach App"):
