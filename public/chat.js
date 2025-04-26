@@ -16,6 +16,14 @@ class ChatEntry {
 
 window.chatHistory = [];
 
+// Predefined mockup responses
+const mockupResponses = [
+    "Sure! Let’s start by understanding your main goal.<br>Could you tell me a bit more about what you want to achieve?",
+    "Got it! That's a great start.<br>Now, how often would you like to work towards this goal each week?"
+];
+
+let mockupCounter = 0; // Counter for mockup responses
+
 function getChatMessageComponentFromData(chatEntry) {
     return `<div class="${chatEntry.fromUser ? "user-chatblock" : "bot-chatblock"} chatblock">
         <div class="chat-message-header">
@@ -69,75 +77,41 @@ function rerenderMessagesInChat() {
     for (const msg of window.chatHistory) {
         rendererHTML += getChatMessageComponentFromData(msg);
     }
-    $(".chat-content").innerHTML = rendererHTML;
-    $(".chat-content").scrollTop = $(".chat-content").scrollHeight;
+    document.querySelector(".chat-content").innerHTML = rendererHTML;
+    document.querySelector(".chat-content").scrollTop = document.querySelector(".chat-content").scrollHeight;
 }
 
-// MOCK-UP responses
-const mockupResponses = [
-    "Sure! Let’s start by understanding your main goal.<br>Could you tell me a bit more about what you want to achieve?",
-    "Got it! That's a great start.<br>Now, how often would you like to work towards this goal each week?"
-];
-let mockupCounter = 0;
-
-async function requestAndAwaitResponseTo(content) {
-    await sleep(1000); // simulate network delay
+function respondMockup(content) {
+    let responseText = "";
     if (mockupCounter < mockupResponses.length) {
-        return mockupResponses[mockupCounter++];
+        responseText = mockupResponses[mockupCounter];
+        mockupCounter++;
     } else {
-        return "I'm ready for your next question! 🚀"; // fallback
+        responseText = "I'm ready for your next question! 🚀";
     }
+    return responseText;
 }
 
-// Utility sleep function
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-let waitingForResponse = false;
-async function handleMessageSend() {
-    if (waitingForResponse) return;
-    const content = $(".chat-box-input").value;
+function handleMessageSend() {
+    const content = document.querySelector(".chat-box-input").value.trim();
     if (content.length < 1) return;
-    $(".chat-box-input").value = "";
+    document.querySelector(".chat-box-input").value = "";
+
     addAsUserToChat(content);
     rerenderMessagesInChat();
 
-    waitingForResponse = true;
-    $(".send-icon").style.opacity = 0.2;
-    $(".chat-box-input").disabled = true;
-
-    // Add "Typing..." fake message
-    addAsChatbotToChat("Bot", "<i>Typing...</i>");
+    const response = respondMockup(content);
+    addAsChatbotToChat("Bot", response);
     rerenderMessagesInChat();
-
-    const responseFromBot = await requestAndAwaitResponseTo(content);
-
-    // Remove "Typing..." message
-    window.chatHistory.pop();
-
-    // Add real bot message
-    addAsChatbotToChat("Bot", responseFromBot);
-    rerenderMessagesInChat();
-
-    $(".send-icon").style.opacity = 1;
-    $(".chat-box-input").disabled = false;
-    waitingForResponse = false;
 }
 
 function registerChatControlls() {
-    $(".send-icon").addEventListener("click", handleMessageSend);
-    $(".chat-box-input").addEventListener("keydown", (event) => {
+    document.querySelector(".send-icon").addEventListener("click", handleMessageSend);
+    document.querySelector(".chat-box-input").addEventListener("keydown", (event) => {
         if (event.key === 'Enter') {
-            event.preventDefault();
             handleMessageSend();
         }
     });
-}
-
-// Helper function to select elements
-function $(selector) {
-    return document.querySelector(selector);
 }
 
 registerChatControlls();
