@@ -15,6 +15,7 @@ class ChatRequest(BaseModel):
     prompt: str
     history: list[Message] = []
 
+
 @chat_router.post("/", response_model=str)
 def get_completion(request: ChatRequest) -> str:
     """
