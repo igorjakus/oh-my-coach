@@ -35,6 +35,11 @@ The application offers a personal agent who acts as both a supportive friend and
 
 ## Technologies
 
+- Python with FastAPI
+- WebRTC and node.js for VTV
+- Vanilla HTML + Bootstrap
+- OpenAI Real Time API
+
 ## Images
 
 ## Project Overview
