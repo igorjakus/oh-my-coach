@@ -16,7 +16,58 @@ def get_session():
         yield session
 
 
-# ========== ENDPOINTS ==========
+# ========== ENDPOINTS ==============
+# ========== GET ENDPOINTS ==========
+@task_router.get("/tasks/{task_id}", response_model=TaskRead)
+async def read_task(task_id: int, session: Session = Depends(get_session)):
+    # Read task by ID
+    task = session.get(Task, task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return task
+
+@task_router.get("/goals/{goal_id}/current-task", response_model=TaskRead)
+async def get_current_task(goal_id: int, session: Session = Depends(get_session)):
+    """Get the current task for a goal based on current_task_number"""
+    # Get the goal
+    goal = session.get(Goal, goal_id)
+    if not goal:
+        raise HTTPException(status_code=404, detail="Goal not found")
+    
+    # Get the current task
+    current_task = session.exec(
+        select(Task)
+        .where(Task.goal_id == goal_id, Task.number == goal.current_task_number)
+        .limit(1)
+    ).first()
+    
+    if not current_task:
+        raise HTTPException(status_code=404, detail="No current task found")
+    
+    return current_task
+
+@task_router.get("/goals/{goal_id}/done-tasks", response_model=List[TaskRead])
+async def get_done_tasks(goal_id: int, session: Session = Depends(get_session)):
+    # Get done tasks (numbers less than current)
+    goal = session.get(Goal, goal_id)
+    if not goal:
+        raise HTTPException(status_code=404, detail="Goal not found")
+    statement = select(Task).where(
+        Task.goal_id == goal_id,
+        Task.number < goal.current_task_number
+    ).order_by(Task.number)
+    done_tasks = session.exec(statement).all()
+    return done_tasks
+
+@task_router.get("/goals/{goal_id}/tasks", response_model=List[TaskRead])
+async def get_all_goal_tasks(goal_id: int, session: Session = Depends(get_session)):
+    # Get all tasks for the goal
+    statement = select(Task).where(Task.goal_id == goal_id).order_by(Task.number)
+    tasks = session.exec(statement).all()
+    return tasks
+
+
+# =========== POST ENDPOINTS ==========
 @task_router.post("/goals", response_model=GoalRead)
 async def create_goal(goal: GoalCreate, session: Session = Depends(get_session)):
     # Create a new goal
@@ -25,25 +76,6 @@ async def create_goal(goal: GoalCreate, session: Session = Depends(get_session))
     session.commit()
     session.refresh(db_goal)
     return db_goal
-
-@task_router.delete("/goals/{goal_id}")
-async def delete_goal(goal_id: int, session: Session = Depends(get_session)):
-    # Delete goal and all its tasks
-    goal = session.get(Goal, goal_id)
-    if not goal:
-        raise HTTPException(status_code=404, detail="Goal not found")
-    session.delete(goal)
-    session.exec(select(Task).where(Task.goal_id == goal_id)).delete()
-    session.commit()
-    return {"ok": True}
-
-@task_router.get("/tasks/{task_id}", response_model=TaskRead)
-async def read_task(task_id: int, session: Session = Depends(get_session)):
-    # Read task by ID
-    task = session.get(Task, task_id)
-    if not task:
-        raise HTTPException(status_code=404, detail="Task not found")
-    return task
 
 @task_router.post("/goals/{goal_id}/next-task", response_model=TaskRead)
 async def go_to_next_task(goal_id: int, session: Session = Depends(get_session)):
@@ -74,26 +106,6 @@ async def go_to_next_task(goal_id: int, session: Session = Depends(get_session))
     session.commit()
     
     return next_task
-
-@task_router.get("/goals/{goal_id}/done-tasks", response_model=List[TaskRead])
-async def get_done_tasks(goal_id: int, session: Session = Depends(get_session)):
-    # Get done tasks (numbers less than current)
-    goal = session.get(Goal, goal_id)
-    if not goal:
-        raise HTTPException(status_code=404, detail="Goal not found")
-    statement = select(Task).where(
-        Task.goal_id == goal_id,
-        Task.number < goal.current_task_number
-    ).order_by(Task.number)
-    done_tasks = session.exec(statement).all()
-    return done_tasks
-
-@task_router.get("/goals/{goal_id}/tasks", response_model=List[TaskRead])
-async def get_all_goal_tasks(goal_id: int, session: Session = Depends(get_session)):
-    # Get all tasks for the goal
-    statement = select(Task).where(Task.goal_id == goal_id).order_by(Task.number)
-    tasks = session.exec(statement).all()
-    return tasks
 
 @task_router.post("/goals/{goal_id}/generate-task", response_model=TaskRead)
 async def generate_and_create_task(goal_id: int, session: Session = Depends(get_session)):
@@ -143,22 +155,24 @@ async def create_task_manually(goal_id: int, task: TaskCreate, session: Session 
     session.refresh(db_task)
     return db_task
 
-@task_router.get("/goals/{goal_id}/current-task", response_model=TaskRead)
-async def get_current_task(goal_id: int, session: Session = Depends(get_session)):
-    """Get the current task for a goal based on current_task_number"""
-    # Get the goal
+
+# ==== DELETE ENDPOINTS ====
+@task_router.delete("/goals/{goal_id}")
+async def delete_goal(goal_id: int, session: Session = Depends(get_session)):
+    # Delete goal and all its tasks
     goal = session.get(Goal, goal_id)
     if not goal:
         raise HTTPException(status_code=404, detail="Goal not found")
-    
-    # Get the current task
-    current_task = session.exec(
-        select(Task)
-        .where(Task.goal_id == goal_id, Task.number == goal.current_task_number)
-        .limit(1)
-    ).first()
-    
-    if not current_task:
-        raise HTTPException(status_code=404, detail="No current task found")
-    
-    return current_task
+    session.delete(goal)
+    session.exec(select(Task).where(Task.goal_id == goal_id)).delete()
+    session.commit()
+    return {"ok": True}
+
+
+@task_router.delete("/")
+async def clear_database(session: Session = Depends(get_session)):
+    """Clear the database"""
+    session.exec(select(Task)).delete()
+    session.exec(select(Goal)).delete()
+    session.commit()
+    return {"ok": True}
