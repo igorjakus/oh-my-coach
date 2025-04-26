@@ -1,4 +1,5 @@
-# Oh My Coach
+# OpenAI Hackathon 2025 - Oh My Coach
+
 Agentic AI coach that helps you crush your goals — and go beyond!
 
 ## Setup
@@ -25,7 +26,7 @@ LOG_LEVEL=INFO
 Note: Never commit your `.env` file to version control. The `.gitignore` file already includes it.
 
 ### Option 1: Local Setup with UV
-1. Install UV package manager:
+1. Install UV packagllm jailbreakinge manager:
 ```bash
 pip install uv
 ```
@@ -47,9 +48,24 @@ pre-commit install
 docker compose up
 ```
 
-## Development resources & Acknowledgments
-[Database diagrams](https://dbdiagram.io/)
-[Full-Stack FastAPI Template](https://github.com/fastapi/full-stack-fastapi-template)
-[Hackathon-Starter](https://github.com/Kabanosk/hackathon-starter/) - this repo is heavily inspired by this:)
-[Hackathon-Booster](https://github.com/igorjakus/hackathon-booster/)
-[OpenAI-Realtime-FastAPI](https://github.com/Geo-Joy/openai-realtime-fastapi)
+
+## Technologies
+
+## Images
+
+## Project Overview
+
+### Inspiration
+
+### What it does
+
+### How we built it
+
+### Challenges we ran into
+
+### What we learned
+
+### What's next for Oh My Coach
+
+### How to run
+
