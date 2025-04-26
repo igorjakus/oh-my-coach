@@ -20,5 +20,5 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(health_check_router)
 app.include_router(chat_router, prefix="/chat", tags=["chat"])
-app.include_router(task_router, prefix="/tasks", tags=["tasks"])
 app.include_router(personalization_router, prefix="/personalization", tags=["personalization"])
+app.include_router(task_router, prefix="/tasks", tags=["tasks"])

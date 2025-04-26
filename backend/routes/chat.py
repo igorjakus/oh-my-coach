@@ -45,7 +45,7 @@ async def get_triage_response(request: ChatRequest) -> str:
 
 
 @chat_router.post("/personalised", response_model=str)
-async def get_personalised_response(request: ChatRequest, personalised_agent: Agent) -> str:
+async def get_personalised_response(request: ChatRequest, personalised_agent) -> str:
     """
     Get a personalised response from the best agent based on the query.
     """    
