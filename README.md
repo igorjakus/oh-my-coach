@@ -1,9 +1,5 @@
 # Oh My Coach
 
-Agentic AI coach that helps you crush your goals — and go beyond!
-
----
-
 ## Table of Contents
 
 * [Oh My Coach](#oh-my-coach)
@@ -31,14 +27,15 @@ Agentic AI coach that helps you crush your goals — and go beyond!
 
 ## Description
 
-The application offers a personal agent who acts as both a supportive friend and a dedicated coach. It gets to know you over time, helps you stay motivated, assists in organizing your daily plans, and supports you in achieving your goals. At the end of the day, it also provides a space to clear your mind and reflect before sleep.
+Oh My Coach! Your simple personal assistant for difficult planning. Just set your goal and let be guided by individual chats, personalized tasks and daily retro recaps.
 
 ## Technologies
 
-- Python with FastAPI
-- WebRTC and node.js for VTV
-- Vanilla HTML + Bootstrap
-- OpenAI Real Time API
+* Python with FastAPI
+* WebRTC and node.js for VTV
+* Vanilla HTML + Bootstrap
+* OpenAI API
+* postgresql
 
 ## Images
 
