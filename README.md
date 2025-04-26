@@ -53,7 +53,7 @@ Some people live busy lives and often find themselves at the end of the day with
 
 **Oh My Coach** is a multimodal AI agent that gradually gets to know you through regular conversations.
 
-When prompted, it consults with a specialist in a relevant field (e.g., dietitian, psychologist, personal trainer), providing them with the full context.
+When prompted, triage agent decides which specialists (AI agents) are the most relevant (e.g., nutritionist, psychologist, personal trainer), providing them with the full context.
 
 These specialists can see your goals and track your progress. They generate a tailored response and propose a task, which you can choose to accept and add to your personal task list.
 
