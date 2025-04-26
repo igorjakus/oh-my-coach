@@ -51,7 +51,7 @@ Some people live busy lives and often find themselves at the end of the day with
 
 ### What it does?
 
-**Oh My Coach** is an AI agent that gradually gets to know you through regular conversations.
+**Oh My Coach** is a multimodal AI agent that gradually gets to know you through regular conversations.
 
 When prompted, it consults with a specialist in a relevant field (e.g., dietitian, psychologist, personal trainer), providing them with the full context.
 
