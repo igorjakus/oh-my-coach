@@ -1,6 +1,6 @@
 from typing import Optional
 
-from agents import Agent, Runner, WebSearchTool, set_default_openai_key, trace
+from agents import Agent, Runner, WebSearchTool, set_default_openai_key
 from agents.extensions.handoff_prompt import prompt_with_handoff_instructions
 from fastapi import HTTPException
 from openai import OpenAI
@@ -172,6 +172,23 @@ async def get_response_from_best_agent(query: str) -> str:
         str: Response from the best agent
     """
     result = await Runner.run(triage_agent, query)
+    if result.final_output:
+        return result.final_output
+    else:
+        raise HTTPException(status_code=500, detail="No suitable agent found")
+
+
+async def get_best_response(query: str, personalised_agent: Agent) -> str:
+    """
+    Get a response from the personalised agent based on the query.
+    Args:
+        query: User's query
+        personalised_agent: Personalised agent to get response from
+    Returns:
+        str: Response from the personalised agent
+    """
+    query = await get_response_from_best_agent(query)
+    result = await Runner.run(personalised_agent, query)
     if result.final_output:
         return result.final_output
     else:

@@ -1,5 +1,9 @@
 from enum import Enum
 
+from agents import Agent
+from fastapi import APIRouter, HTTPException
+
+personalization_router = APIRouter()
 
 class Tone(Enum):
     FRIENDLY = "friendly"
@@ -75,3 +79,44 @@ def create_agent_prompt(
     """
     
     return prompt
+
+
+@personalization_router.post("/create_agent")
+async def create_personalized_agent(
+    pseudonym: str,
+    personality: str,
+    tone: Tone,
+    motivation_level: int,
+    task_focus: TaskFocus,
+    language: Language,
+    response_length: ResponseLength = ResponseLength.FLEXIBLE,
+    humor_style: HumorStyle = HumorStyle.NONE,
+    empathy_level: EmpathyLevel = EmpathyLevel.MEDIUM,
+    reward_style: RewardStyle = RewardStyle.MODERATE,
+    feedback_type: FeedbackType = FeedbackType.CONSTRUCTIVE,
+):
+    """
+    Create a personalized agent based on user preferences.
+    """
+    try:
+        prompt = create_agent_prompt(
+            pseudonym,
+            personality,
+            tone,
+            motivation_level,
+            task_focus,
+            language,
+            response_length,
+            humor_style,
+            empathy_level,
+            reward_style,
+            feedback_type
+        )
+        return Agent(
+            name=pseudonym,
+            instructions=prompt,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception:
+        raise HTTPException(status_code=500, detail="An error occurred while creating the agent.")

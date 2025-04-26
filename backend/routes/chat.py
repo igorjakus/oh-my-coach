@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from openai import OpenAI
 from pydantic import BaseModel
 
-from backend.brain import get_response_from_best_agent
+from backend.brain import get_best_response, get_personalised_agent, get_response_from_best_agent
 from backend.config import API_KEY
 
 chat_router = APIRouter()
@@ -41,3 +41,18 @@ async def get_completion(request: ChatRequest) -> str:
 async def get_triage_response(request: ChatRequest) -> str:
     query = "".join([msg.content for msg in request.history]) + request.prompt
     return await get_response_from_best_agent(query)
+
+
+@chat_router.post("/personalised", response_model=str)
+async def get_personalised_response(request: ChatRequest) -> str:
+    """
+    Get a personalised response from the best agent based on the query.
+    """
+    # Assuming you have a function to get the personalised agent
+    personalised_agent = get_personalised_agent(request.prompt)
+    
+    if not personalised_agent:
+        raise HTTPException(status_code=404, detail="Personalised agent not found")
+    
+    query = "".join([msg.content for msg in request.history]) + request.prompt
+    return await get_best_response(query, personalised_agent)
