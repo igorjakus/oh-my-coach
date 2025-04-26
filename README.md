@@ -54,6 +54,9 @@ fastapi dev backend/main.py
 ```
 You can see endpoints going to adress `http://localhost:8000/docs` in your favorite browser:)
 
+**We have a lot of endpoints;)**
+![API Endpoints](docs/endpoints.png)
+
 ---
 
 ## Development Resources & Acknowledgments
