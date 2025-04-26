@@ -70,10 +70,10 @@ dependencies = [
     # Databases including Vector Storage & Embeddings
     "chromadb>=0.4.24",
     "sentence-transformers>=2.4.0",  # for generating embeddings
-    # "pgcli>=4.3.0",
-    # "sqlmodel>=0.0.24",
-    # "sqlalchemy",
-    # "psycopg"
+    "pgcli>=4.3.0",
+    "sqlmodel>=0.0.24",
+    "sqlalchemy",
+    "psycopg2-binary>=2.9.6",  # for PostgreSQL support
 ]
 
 [dependency-groups]

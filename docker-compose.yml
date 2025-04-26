@@ -1,0 +1,49 @@
+# jakbys wstał przedemną przez przypadek to bazy nie widze w sensie nigdzie nie masz definicjy tych tabel pliku sql ani nic takiego z czego powinniśmy wczytywac
+# a żeby nie musiec bawic sie z łączeniem bazy i app to trzeba dodac współny network (nie mam jak odpalic dockera na kompie wiec sam tego nie zrobie)
+
+version: '3.8'
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    # Uncomment for Nvidia GPU support
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=hackathon
+      - POSTGRES_PASSWORD=hackathon
+      - POSTGRES_DB=hackathon
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  # Uncomment if you need vector database
+  # chroma:
+  #   image: chromadb/chroma
+  #   ports:
+  #     - "8001:8000"
+  #   volumes:
+  #     - chroma_data:/chroma/chroma
+
+volumes:
+  postgres_data:
+  # chroma_data:
