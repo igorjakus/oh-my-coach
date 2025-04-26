@@ -41,11 +41,11 @@ The application offers a personal agent who acts as both a supportive friend and
 
 ### Inspiration
 
-Some people live busy lives and often find themselves at the end of the day with a cluttered mind. The idea behind **Oh-My-Coach** was to provide an app where you could reflect on the events of the day, talk about your goals, worries, and anything you might usually share only with a close friend. When needed, the app enables a retrospective chat that helps you organize your thoughts and find peace of mind.
+Some people live busy lives and often find themselves at the end of the day with a cluttered mind. The idea behind **Oh My Coach** was to provide an app where you could reflect on the events of the day, talk about your goals, worries, and anything you might usually share only with a close friend. When needed, the app enables a retrospective chat that helps you organize your thoughts and find peace of mind.
 
 ### What it does?
 
-**Oh-My-Coach** is an AI agent that gradually gets to know you through regular conversations.
+**Oh My Coach** is an AI agent that gradually gets to know you through regular conversations.
 
 When prompted, it consults with a specialist in a relevant field (e.g., dietitian, psychologist, personal trainer), providing them with the full context.
 
@@ -53,7 +53,7 @@ These specialists can see your goals and track your progress. They generate a ta
 
 The app includes a **Goals and Tasks** view, where you can track your current goals and review the tasks suggested to help you reach them.
 
-Need to clear your head? The **Retro** view allows you to talk to your agent using speech-to-speech, letting you unload your deepest thoughts in a safe space.
+Need to clear your head? The **Retro** view allows you to talk to your OpenAI speech-to-speech agent, letting you unload your deepest thoughts in a safe space.
 
 ### How we built it
 
@@ -137,3 +137,5 @@ You can see endpoints going to adress `http://localhost:8000/docs` in your favor
 * [Hackathon-Starter](https://github.com/Kabanosk/hackathon-starter/) - this repo is heavily inspired by this :)
 * [Hackathon-Booster](https://github.com/igorjakus/hackathon-booster/)
 * [OpenAI-Realtime-FastAPI](https://github.com/Geo-Joy/openai-realtime-fastapi)
+* [Katia's github with pinned materials](https://github.com/katia-openai)
+* [Nice docs about OpenAI Agents SDK](https://openai.github.io/openai-agents-python/)
