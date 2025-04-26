@@ -493,6 +493,7 @@
     console.log(userData)
     const persona = await CreatePersonas(userData)
     console.log('Utworzono nowego użytkownika:', persona);
+    fetchUsers();
     closeUserModal();
   });
 </script>  
