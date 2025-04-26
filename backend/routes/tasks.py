@@ -1,7 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session, select
+from sqlmodel import Session, select, delete
 
 from backend.brain import generate_task
 from backend.config import engine
@@ -172,7 +172,7 @@ async def delete_goal(goal_id: int, session: Session = Depends(get_session)):
 @task_router.delete("/")
 async def clear_database(session: Session = Depends(get_session)):
     """Clear the database"""
-    session.exec(select(Task)).delete()
-    session.exec(select(Goal)).delete()
+    session.exec(delete(Task))
+    session.exec(delete(Goal))
     session.commit()
     return {"ok": True}
