@@ -45,16 +45,14 @@ psql postgres -c "CREATE USER hackathon WITH PASSWORD 'hackathon';" && \
 psql postgres -c "CREATE DATABASE hackathon OWNER hackathon;"
 ```
 
+### Run backend
+```bash
+fastapi dev backend/main.py
+```
+You can see endpoints going to adress `http://localhost:8000/docs` in your favorite browser:)
+
 ---
 
-<<<<<<< HEAD
-## Development resources & Acknowledgments
-[Database diagrams](https://dbdiagram.io/)
-[Full-Stack FastAPI Template](https://github.com/fastapi/full-stack-fastapi-template)
-[Hackathon-Starter](https://github.com/Kabanosk/hackathon-starter/) - this repo is heavily inspired by this:)
-[Hackathon-Booster](https://github.com/igorjakus/hackathon-booster/)
-[OpenAI-Realtime-FastAPI](https://github.com/Geo-Joy/openai-realtime-fastapi)
-=======
 ## Development Resources & Acknowledgments
 - [Database diagrams](https://dbdiagram.io/)
 - [Full-Stack FastAPI Template](https://github.com/fastapi/full-stack-fastapi-template)
@@ -63,4 +61,3 @@ psql postgres -c "CREATE DATABASE hackathon OWNER hackathon;"
 - [OpenAI-Realtime-FastAPI](https://github.com/Geo-Joy/openai-realtime-fastapi)
 
 ---
->>>>>>> c075ada830a41bd00a68e916a21ed71f8f22da56
