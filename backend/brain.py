@@ -163,9 +163,7 @@ async def generate_task(goal_id: int, previous_tasks: list[Task]) -> Task:
         return result.final_output  # task_manager_agent will return Task object since we set output_type=Task
 
 
-def get_response_from_best_agent(
-    query: str,
-) -> str:
+async def get_response_from_best_agent(query: str) -> str:
     """
     Get a response from the best agent based on the query.
     Args:
@@ -173,7 +171,7 @@ def get_response_from_best_agent(
     Returns:
         str: Response from the best agent
     """
-    result = Runner.run(triage_agent, query)
+    result = await Runner.run(triage_agent, query)
     if result.final_output:
         return result.final_output
     else:

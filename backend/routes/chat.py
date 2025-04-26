@@ -18,7 +18,7 @@ class ChatRequest(BaseModel):
 
 
 @chat_router.post("/", response_model=str)
-def get_completion(request: ChatRequest) -> str:
+async def get_completion(request: ChatRequest) -> str:
     """
     Get a completion from the OpenAI API using conversation history.
     """
@@ -38,6 +38,6 @@ def get_completion(request: ChatRequest) -> str:
 
 
 @chat_router.post("/triage", response_model=str)
-def get_triage_response(request: ChatRequest) -> str:
+async def get_triage_response(request: ChatRequest) -> str:
     query = "".join([msg.content for msg in request.history]) + request.prompt
-    return get_response_from_best_agent(query)
+    return await get_response_from_best_agent(query)
