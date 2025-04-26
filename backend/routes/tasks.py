@@ -1,7 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session, select
+from sqlmodel import Session, delete, select
 
 from backend.brain import generate_task
 from backend.config import engine
@@ -171,7 +171,12 @@ async def delete_goal(goal_id: int, session: Session = Depends(get_session)):
     goal = session.get(Goal, goal_id)
     if not goal:
         raise HTTPException(status_code=404, detail="Goal not found")
+    
+    # First delete all associated tasks
+    statement = delete(Task).where(Task.goal_id == goal_id)
+    session.exec(statement)
+    
+    # Then delete the goal
     session.delete(goal)
-    session.exec(select(Task).where(Task.goal_id == goal_id)).delete()
     session.commit()
     return {"ok": True}
