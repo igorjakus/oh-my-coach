@@ -179,8 +179,8 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="style-retro.css">
+  <link rel="stylesheet" href="/public/style.css">
+  <link rel="stylesheet" href="/public/style-retro.css">
 </head>
 <body>
 
@@ -191,9 +191,7 @@
         <div class="nickname-box" onclick="toggleDropdown()">SKURWYSYN</div>
         <div class="profile-picture-left"></div>
         <div class="dropdown" id="userDropdown">
-          <!-- Dropdown items will be injected here -->
-          <!-- Hardcoded "Create New User" button -->
-          <div class="create-user-button" onclick="redirectToCreateUser()">Create New User</div>
+          <div class="create-user-button" onclick="openUserModal()">Create New User</div>
         </div>
       </div>
     </div>
@@ -256,8 +254,8 @@
     <div onclick="showView('retroView')">RETRO</div>
     <div onclick="showView('progressView')">PROGRESS</div>
   </div>
-<script src="leftbar.js"></script>
-<script src="utils.js"></script>
-<script src="vtv.js"></script>
+<!-- <script src="/public/leftbar.js"></script> -->
+<script src="/public/utils.js"></script>
+<script src="/public/vtv.js"></script>
 </body>
 </html>

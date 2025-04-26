@@ -179,8 +179,8 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="style-progress.css">
+  <link rel="stylesheet" href="/public/style.css">
+  <link rel="stylesheet" href="/public/style-progress.css">
 </head>
 <body>
 
@@ -202,11 +202,11 @@
     <div class="mid-container">
       <div class="progress-box">
         <div class="progress-orders">
-          <img src="../images/OpenAI Playground 2025-04-26 at 05.52.21.png"/>
-          <img src="../images/OpenAI Playground 2025-04-26 at 05.55.48.png"/>
-          <img src="../images/OpenAI Playground 2025-04-26 at 05.49.48.png"/>
-          <img src="../images/OpenAI Playground 2025-04-26 at 06.08.43.png"/>
-          <img src="../images/OpenAI Playground 2025-04-26 at 06.10.12.png"/>
+          <img src="/public/images/OpenAI Playground 2025-04-26 at 05.52.21.png"/>
+          <img src="/public/images/OpenAI Playground 2025-04-26 at 05.55.48.png"/>
+          <img src="/public/images/OpenAI Playground 2025-04-26 at 05.49.48.png"/>
+          <img src="/public/images/OpenAI Playground 2025-04-26 at 06.08.43.png"/>
+          <img src="/public/images/OpenAI Playground 2025-04-26 at 06.10.12.png"/>
         </div>
         <div class="progress-goals-l">
           <div class="progress-goals-le">
@@ -250,8 +250,8 @@
     <div onclick="showView('retroView')">RETRO</div>
     <div onclick="showView('progressView')">PROGRESS</div>
   </div>
-<script src="leftbar.js"></script>
-<script src="utils.js"></script>
+<script src="/public/leftbar.js"></script>
+<script src="/public/utils.js"></script>
 <script>
 for ( const el of document.querySelectorAll(".progrees-goals-bar") ) {
   el.children[0].style.width = `${el.dataset.progress}%`

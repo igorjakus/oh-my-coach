@@ -3,16 +3,16 @@ const $ = (selector) => document.querySelector(selector)
 function showView(test) {
     switch(test) {
         case "goalsView":
-            document.location.href = "/public/goals.html"
+            document.location.href = "/goals"
             break;
         case "chatView":
-            document.location.href = "/public/chat.html"
+            document.location.href = "/chat"
             break;
         case "retroView":
-            document.location.href = "/public/retro.html"
+            document.location.href = "/retro"
             break;
         case "progressView":
-            document.location.href = "/public/progress.html"
+            document.location.href = "/progress"
             break;
     }
 }

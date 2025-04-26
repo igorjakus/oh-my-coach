@@ -1,25 +1,29 @@
 from fastapi import APIRouter
 from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 
 router = APIRouter()
 
+
 @router.get("/")
 async def root():
-    return FileResponse("../public/chat.html")
+    return FileResponse("./public/chat.html")
 
-@router.get("/chat.html")
+
+@router.get("/chat")
 async def chat_page():
-    return FileResponse("../public/chat.html")
+    return FileResponse("./public/chat.html")
 
-@router.get("/goals.html")
+
+@router.get("/goals")
 async def goals_page():
-    return FileResponse("../public/goals.html")
+    return FileResponse("./public/goals.html")
 
-@router.get("/retro.html")
+
+@router.get("/retro")
 async def retro_page():
-    return FileResponse("../public/retro.html")
+    return FileResponse("./public/retro.html")
 
-@router.get("/progress.html")
+
+@router.get("/progress")
 async def progress_page():
-    return FileResponse("../public/progress.html")
+    return FileResponse("./public/progress.html")

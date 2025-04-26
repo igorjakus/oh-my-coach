@@ -29,7 +29,7 @@ RUN pip install --no-cache-dir uv && \
     uv sync
 
 # Copy the rest of the application
-COPY . /app
+COPY --exclude .venv/ . /app
 
 EXPOSE 8000
 CMD ["fastapi", "dev", "backend/main.py"]

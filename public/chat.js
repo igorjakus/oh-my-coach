@@ -73,12 +73,40 @@ function rerenderMessagesInChat() {
     $(".chat-content").scrollTop = $(".chat-content").scrollHeight;
 }
 
-function handleMessageSend() {
+async function requestAndAwaitResponseTo(content) {
+    const response = await fetch("http://localhost:8000/chat/", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "prompt": content,
+            "history": []
+        }),
+    });
+    const data = await (response.text());
+    console.log(data)
+    return data;
+}
+
+
+let waitingForResponse = false;
+async function handleMessageSend() {
+    if (waitingForResponse) return;
     const content = $(".chat-box-input").value;
     if (content.length < 1) return;
     $(".chat-box-input").value = "";
     addAsUserToChat(content);
     rerenderMessagesInChat();
+    waitingForResponse=true;
+    $(".chat-box-input").style.opacity = 0.2;
+    $(".send-icon").disabled = true;
+    const responseFromBot = await requestAndAwaitResponseTo(content);
+    addAsChatbotToChat("Bot", responseFromBot);
+    rerenderMessagesInChat();
+    $(".chat-box-input").style.opacity = 0;
+    $(".send-icon").disabled = false;
+    waitingForResponse=false;
 }
 
 function registerChatControlls() {
