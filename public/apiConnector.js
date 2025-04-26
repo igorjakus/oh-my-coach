@@ -1,3 +1,15 @@
+function GetAllGoals() {
+    return fetch(`http://localhost:8000/tasks/goals`, {
+        method: 'GET',
+        headers: {
+            
+        }
+    })
+    .then(response => response.json())
+    .catch(error => console.error('Error:', error));
+}
+
+
 function GetAllTasksInGoal(goalId) {
     return fetch(`http://localhost:8000/tasks/goals/${goalId}/tasks`, {
         method: 'GET',

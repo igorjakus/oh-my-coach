@@ -38,7 +38,7 @@ function adjustDropdownHeight() {
   const navbarHeight = navbar.offsetHeight;
   const dropdownButtonBottom = dropdownButtonRect.bottom;
   const availableHeight = window.innerHeight - dropdownButtonBottom - navbarHeight - 10;
-  dropdown.style.maxHeight = `${availableHeight}px`;  <!-- Poprawiona interpolacja -->
+  dropdown.style.maxHeight = `${availableHeight}px`;
 }
 
 // This function is called when a checkbox is clicked
