@@ -2,7 +2,12 @@
 
 async function init() {
     // Get an ephemeral key from your server - see server code below
-    const tokenResponse = await fetch("http://localhost:3000/request-vtv-ephemeral");
+    const persona = getCurrentPersona();
+    if (!persona) return;
+    
+    const url = new URL("http://localhost:3000/request-vtv-ephemeral");
+    url.searchParams.append("prompt", persona.prompt);
+    const tokenResponse = await fetch(url);
     const data = await tokenResponse.json();
     const EPHEMERAL_KEY = data.client_secret.value;
 

@@ -6,6 +6,8 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+app.use(express.json());
+
 var corsOptions = {
     origin: '*',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -25,8 +27,7 @@ app.get('/request-vtv-ephemeral', cors(corsOptions), async (req, res) => {
         body: JSON.stringify({
             model: "gpt-4o-realtime-preview",
             voice: "alloy",
-
-            instructions: "You are a person with whom you can talk about various things in a relaxed way. You will help plan the next day and you will make a retrospective of a given day and include its results in planning."
+            instructions: req.query.prompt ?? "You are a person with whom you can talk about various things in a relaxed way. You will help plan the next day and you will make a retrospective of a given day and include its results in planning."
         }),
     });
     const data = await r.json();
