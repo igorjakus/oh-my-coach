@@ -81,7 +81,9 @@ function rerenderMessagesInChat() {
 }
 
 async function requestAndAwaitResponseTo(content) {
-    const response = await fetch("http://localhost:8000/chat/", {
+    const persona = getCurrentPersona();
+    if (!persona) return;
+    const response = await fetch(`http://localhost:8000/chat/?agent_id=${persona.id}`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -96,10 +98,10 @@ async function requestAndAwaitResponseTo(content) {
             })
         }),
     });
-    const data = await (response.text());
+    const data = (await (response.json())).response;
     var converter = new showdown.Converter();
     showdown.setOption('tables', true);
-    var text      = data.replace(new RegExp('\r?\n','g'), '<br />').substring(1, data.length - 2);
+    var text      = data.replace(new RegExp('\r?\n','g'), '<br />');
     var html      = converter.makeHtml(text);
     return html;
 }
@@ -119,7 +121,8 @@ async function handleMessageSend() {
     $(".chat-box-input").disabled = true;
     const responseFromBot = await requestAndAwaitResponseTo(content);
     
-    addAsChatbotToChat("Bot", responseFromBot);
+    // addAsChatbotToChat("Bot", responseFromBot);
+    await addAsCurrentChatbotToChat(responseFromBot, Date.now())
     rerenderMessagesInChat();
     $(".send-icon").style.opacity = 1;
     $(".chat-box-input").disabled = false;

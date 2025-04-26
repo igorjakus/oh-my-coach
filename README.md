@@ -139,6 +139,15 @@ You can see endpoints going to adress `http://localhost:8000/docs` in your favor
 
 ---
 
+### Run VTV Node server for voice enabled AI integration
+
+```
+# Requries node == 19.0
+cd vtv-node-service
+npm install
+node server.js
+```
+
 # Agent Pipeline
 
 ## Overview Flow
@@ -148,19 +157,19 @@ graph TD
     %% Main Flow Elements
     User([👤 User Input]) --> Session[Session Context]
     Session --> Triage[🎯 Triage Agent]
-    
+
     %% Intent Classification with confidence scores
     Triage --> IntentCheck{Intent Classification<br/>confidence: 0.0-1.0}
     IntentCheck -->|Task Intent 0.8+| TaskCreation[Task Creation]
     IntentCheck -->|Goal Intent 0.8+| GoalCreation[Goal Creation]
     IntentCheck -->|Chat Intent| AgentSelection[Agent Router]
-    
+
     %% Task Creation Flow
     TaskCreation --> TaskManager[⚙️ Task Manager Agent]
     TaskManager --> TaskValidation{Validation}
     TaskValidation -->|Valid| DB[(Database)]
     TaskValidation -->|Invalid| TaskCreation
-    
+
     %% Goal Creation Flow
     GoalCreation --> GoalManager[🎯 Goal Manager Agent]
     GoalManager --> GoalValidation{Validation}
@@ -168,52 +177,52 @@ graph TD
     GoalValidation -->|Invalid| GoalCreation
     GoalManager --> InitialTask[Initial Task Generation]
     InitialTask --> TaskManager
-    
+
     %% Agent Selection Flow with Categories
     AgentSelection --> HealthAgents{Health & Fitness}
     AgentSelection --> MentalAgents{Mental Health}
     AgentSelection --> SupportAgents{Support}
     AgentSelection --> LifestyleAgents{Lifestyle}
-    
+
     %% Health & Fitness Category
     HealthAgents --> |Physical Health| Physiotherapist[👨‍⚕️ Physiotherapist]
     HealthAgents --> |Exercise Plans| Trainer[💪 Trainer]
     HealthAgents --> |Nutrition| Nutritionist[🥗 Nutritionist]
-    
+
     %% Mental Health Category
     MentalAgents --> |Mental Health| Psychotherapist[🧠 Psychotherapist]
     MentalAgents --> |Motivation| Motivator[⭐ Motivator]
-    
+
     %% Support Category
     SupportAgents --> |Friendly Chat| Friend[👋 Friend]
     SupportAgents --> |Entertainment| Entertainer[🎮 Entertainer]
     SupportAgents --> |General Help| Versatile[🔧 Versatile]
-    
+
     %% Lifestyle Category
     LifestyleAgents --> |Life Coaching| Coach[🎓 Coach]
     LifestyleAgents --> |Goal Planning| Dreamer[💭 Dreamer]
-    
+
     %% Special Case - Expert with Tools
     AgentSelection --> |Research Needed| Expert[🔍 Expert Agent]
     Expert --> WebSearch[🌐 Web Search Tool]
     Expert --> Documentation[📚 Documentation]
-    
+
     %% Response Processing - Fixed syntax
     Physiotherapist & Psychotherapist & Motivator & Trainer & Friend & Coach & Dreamer & Nutritionist & Entertainer & Versatile & Documentation & WebSearch --> ResponseProcessor[Response Processor]
-    
+
     %% Quality Checks
     ResponseProcessor --> QualityCheck{Quality Gate}
     QualityCheck -->|Pass| Personalization[🎨 Personalization Layer]
     QualityCheck -->|Fail| AgentSelection
-    
+
     %% Final Response Flow
     Personalization --> FeedbackCheck{User Feedback}
     FeedbackCheck -->|Helpful| Analytics[📊 Analytics]
     FeedbackCheck -->|Not Helpful| Session
-    
+
     %% Session Memory Update
     Analytics --> Session
-    
+
     %% Styling
     classDef primary fill:#ff9900,stroke:#333,stroke-width:4px;
     classDef secondary fill:#87CEEB,stroke:#333,stroke-width:2px;
@@ -222,7 +231,7 @@ graph TD
     classDef input fill:#FFB6C1,stroke:#333,stroke-width:2px;
     classDef validation fill:#FFE4B5,stroke:#333,stroke-width:2px;
     classDef feedback fill:#E6E6FA,stroke:#333,stroke-width:2px;
-    
+
     class Triage,TaskManager,GoalManager primary;
     class IntentCheck,AgentSelection,HealthAgents,MentalAgents,SupportAgents,LifestyleAgents secondary;
     class ResponseProcessor,Personalization process;
@@ -276,7 +285,7 @@ graph TB
     classDef agent fill:#87CEEB,stroke:#333,stroke-width:2px;
     classDef tool fill:#98FB98,stroke:#333,stroke-width:2px;
     classDef storage fill:#DDA0DD,stroke:#333,stroke-width:2px;
-    
+
     class BaseAgent,Health,Mental,Lifestyle,Support,Special category;
     class Physiotherapist,Trainer,Nutritionist,Psychotherapist,Motivator,Coach,Dreamer,Friend,Entertainer,Versatile,Expert,TaskManager,GoalManager agent;
     class WebTools tool;
