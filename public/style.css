@@ -10,6 +10,10 @@ body, html {
     letter-spacing: 0.5px;
 }
 
+body { 
+    background-color: #2B2C32;
+    background-color: #1d2227;
+}
 
 .content {
     height: 95%;
@@ -59,7 +63,7 @@ body, html {
     width: 25%;
 }
 
-.mid-container {
+/* .mid-container {
     border-radius: 12px;
     height: 95%;
     width: 50%;
@@ -68,7 +72,7 @@ body, html {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
+} */
 
 
 .chat-content {
