@@ -81,12 +81,19 @@ async function requestAndAwaitResponseTo(content) {
         },
         body: JSON.stringify({
             "prompt": content,
-            "history": []
+            "history": chatHistory.map( e => { 
+                return {
+                    "role": e.fromUser?'user':'assistant',
+                    "content": e.messageContent
+                }
+            })
         }),
     });
     const data = await (response.text());
-    console.log(data)
-    return data;
+    var converter = new showdown.Converter(),
+    text      = data.replace(new RegExp('\r?\n','g'), '<br />').substring(1, data.length - 2)
+    html      = converter.makeHtml(text);
+    return html;
 }
 
 
@@ -98,14 +105,16 @@ async function handleMessageSend() {
     $(".chat-box-input").value = "";
     addAsUserToChat(content);
     rerenderMessagesInChat();
+
     waitingForResponse=true;
-    $(".chat-box-input").style.opacity = 0.2;
-    $(".send-icon").disabled = true;
+    $(".send-icon").style.opacity = 0.2;
+    $(".chat-box-input").disabled = true;
     const responseFromBot = await requestAndAwaitResponseTo(content);
+    
     addAsChatbotToChat("Bot", responseFromBot);
     rerenderMessagesInChat();
-    $(".chat-box-input").style.opacity = 0;
-    $(".send-icon").disabled = false;
+    $(".send-icon").style.opacity = 1;
+    $(".chat-box-input").disabled = false;
     waitingForResponse=false;
 }
 
