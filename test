@@ -1,0 +1,340 @@
+diff --git a/public/chat.html b/public/chat.html
+new file mode 100644
+index 0000000..8e5d1d3
+--- /dev/null
++++ b/public/chat.html
+@@ -0,0 +1,49 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=send" />
++
++
++    <meta charset="UTF-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <title>Oh my coach! - chat</title>
++    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
++    <link rel="stylesheet" href="style.css">
++</head>
++<body>
++    <div class="content">
++        <div class="left-container"></div>
++        <div class="mid-container">
++            <div class="chat-content">
++                <div class="bot-chatblock chatblock">
++                    <div class="chat-message-header">
++                        <div class="chat-profile-picture"></div>
++                        <div class="chat-profile-nickname">Skurwysyn</div>
++                    </div>
++                    <div class="chat-message-content">
++                        Example chatbox reponse from one of our agents. Another sentence - even longer sentence <br>
++                        Lores ipsum do
++                    </div>
++                </div>
++                <div class="user-chatblock chatblock">
++                </div>
++            </div>
++            <div class="chat-box">
++                <input placeholder="Tell me about you goals" class="chat-box-input" type="text" name="" id="">
++                <span class="send-icon material-symbols-outlined">
++                    send
++                </span>
++            </div>
++        </div>
++        <div class="right-container"></div>
++    </div>
++    <div class="nabvar">
++        <div class="navbar-btn">CHAT</div>
++        <div class="navbar-btn">GOALS</div>
++        <div class="navbar-btn">RETRO</div>
++        <div class="navbar-btn">PROGRESS</div>
++    </div>
++</body>
++<script src="utils.js"></script>
++<script src="chat.js"></script>
++</html>
+\ No newline at end of file
+diff --git a/public/chat.js b/public/chat.js
+new file mode 100644
+index 0000000..22b580f
+--- /dev/null
++++ b/public/chat.js
+@@ -0,0 +1,93 @@
++class ChatEntry {
++    fromUser;
++    messageContent;
++    profilePicuteURL;
++    timestamp;
++    nickname;
++
++    constructor(timestamp, fromUser, nickname, messageContent, profilePicuteURL) {
++        this.timestamp = timestamp;
++        this.fromUser = fromUser;
++        this.messageContent = messageContent;
++        this.profilePicuteURL = profilePicuteURL;
++        this.nickname = nickname;
++    }
++}
++
++window.chatHistory = [];
++
++function getChatMessageComponentFromData(chatEntry) {
++    return `<div class="${chatEntry.fromUser?"user-chatblock":"bot-chatblock"} chatblock">
++        <div class="chat-message-header">
++            <div class="chat-profile-picture"></div>
++            <div class="chat-profile-nickname">${chatEntry.nickname}</div>
++        </div>
++        <div class="chat-message-content">${chatEntry.messageContent}</div>
++    </div>`
++}
++
++function mergeNeighbouringMessages(chatHistory) {
++    let newChatHistory = [ chatHistory[0] ];
++    for (let i = 1; i<chatHistory.length; i++) {
++        if (chatHistory[i].fromUser == newChatHistory[newChatHistory.length-1].fromUser) {
++            newChatHistory[newChatHistory.length-1]
++                .messageContent += `<br>${chatHistory[i].messageContent}`
++        } else {
++            newChatHistory.push(chatHistory[i])
++        }
++    }
++    return newChatHistory;
++}
++
++function addAsChatbotToChat(name, messageContent, timestamp, profilePicuteURL) {
++    window.chatHistory.push(new ChatEntry(
++        timestamp == null ? Date.now() : timestamp,
++        false,
++        name,
++        messageContent,
++        profilePicuteURL
++    ));
++    window.chatHistory = window.chatHistory.sort((a,b) => a.timestamp - b.timestamp)
++    window.chatHistory = mergeNeighbouringMessages(window.chatHistory);
++}
++
++function addAsUserToChat(messageContent, timestamp, profilePicuteURL) {
++    window.chatHistory.push(new ChatEntry(
++        timestamp == null ? Date.now() : timestamp,
++        true,
++        "Me",
++        messageContent,
++        profilePicuteURL
++    ));
++    window.chatHistory = window.chatHistory.sort((a,b) => a.timestamp - b.timestamp)
++    window.chatHistory = mergeNeighbouringMessages(window.chatHistory);
++}
++
++function rerenderMessagesInChat() {
++    window.chatHistory = window.chatHistory.sort((a,b) => a.timestamp - b.timestamp)
++    let rendererHTML = ""
++    for (const msg of window.chatHistory) {
++        rendererHTML += getChatMessageComponentFromData(msg)
++    }
++    $(".chat-content").innerHTML = rendererHTML;
++    $(".chat-content").scrollTop = $(".chat-content").scrollHeight;
++}
++
++function handleMessageSend() {
++    const content = $(".chat-box-input").value;
++    if (content.length < 1) return;
++    $(".chat-box-input").value = "";
++    addAsUserToChat(content);
++    rerenderMessagesInChat();
++}
++
++function registerChatControlls() {
++    $(".send-icon").addEventListener("click", handleMessageSend);
++    $(".chat-box-input").addEventListener("keydown", (event) => {
++        if (event.key === 'Enter') {
++            handleMessageSend();
++        }
++    })
++};
++
++registerChatControlls();
+\ No newline at end of file
+diff --git a/public/style.css b/public/style.css
+new file mode 100644
+index 0000000..9d31d64
+--- /dev/null
++++ b/public/style.css
+@@ -0,0 +1,166 @@
++::-webkit-scrollbar {
++    display: none;
++}
++
++body, html {
++    margin: 0px;
++    width: 100%;
++    height: 100%;
++    font-family: Arial, Helvetica, sans-serif;
++    letter-spacing: 0.5px;
++}
++
++body { 
++    background-color: #2B2C32;
++}
++
++.content {
++    height: 95%;
++    width: 100%;
++    display: flex;
++    flex-direction: row;
++    align-items: center;
++    justify-content: stretch;
++}
++
++.nabvar {
++    height: 5%;
++    width: 100%;
++    /* background-color: #424347; */
++    display: flex;
++    flex-direction: row;
++    justify-content: space-around;
++    align-items: end;
++    
++}
++
++.navbar-btn { 
++    color: white;
++    font-weight: 500;
++    user-select: none;
++    width: 25%;
++    display: flex;
++    align-items: center;
++    justify-content: center;
++    background-color: #424347;
++    transition: 0.2s all;
++    height: 100%;
++    opacity: 0.8;
++}
++
++.navbar-btn:hover {
++    cursor: pointer;
++}
++
++.left-container {
++    width: 25%;
++    height: 100%;
++}
++
++.right-container {
++    height: 100%;
++    width: 25%;
++}
++
++.mid-container {
++    border-radius: 12px;
++    height: 95%;
++    width: 50%;
++    background-color: #31333B;
++    display: flex;
++    flex-direction: column;
++    align-items: center;
++    justify-content: center;
++}
++
++
++.chat-content {
++    width: 100%;
++    height: 85%;
++    display: flex;
++    flex-direction: column;
++    /* justify-content: flex-end; */
++    padding-bottom: 25px;
++    overflow: scroll;
++    padding-right: 5%;
++    padding-left: 5%;
++}
++
++.chat-box {
++    width: 90%;
++    height: 8%;
++    border: 1px solid rgba(255, 255, 255, 0.113);
++    border-radius: 18px;
++    display: flex;
++    flex-direction: row;
++    align-items: center;
++    justify-content: space-around;
++}
++
++
++.chat-box-input {
++    font-weight: 100;
++    width: 90%;
++    color: rgba(255, 255, 255, 0.785);
++    font-weight: 500;
++    padding: 5px;
++    font-size: 22px;
++}
++
++*:active, *:focus {
++    outline: none;
++}
++
++.send-icon {
++    color: rgba(255, 255, 255, 0.438);
++    /* font-weight: 300; */
++    font-size: 32px;
++    user-select: none;
++}
++
++.send-icon:hover {
++    color: white;
++    cursor: pointer;
++}
++
++.chatblock {
++    margin-top: 10px;
++    width: 100%;
++    color: rgba(223, 226, 240, 0.739);
++}
++
++.chat-message-header {
++    width: 100%;
++    display: flex;
++    flex-direction: row;
++    align-items: center;
++    gap: 15px;
++}
++
++.chat-message-content {
++    /* width: 100%; */
++    padding-top: 5px;
++    padding-left: 45px;
++    padding-right: 45px;
++}
++
++.chat-profile-picture {
++    width: 30px;
++    height: 30px;
++    border-radius: 50%;
++    background-color: rgb(159, 56, 56);
++}
++
++.chat-profile-nickname {
++    /* font-weight: bold; */
++    color: white;
++}
++
++
++.user-chatblock {
++    text-align: right;
++}
++
++.user-chatblock>.chat-message-header {
++    flex-direction: row-reverse;
++}
+\ No newline at end of file
+diff --git a/public/utils.js b/public/utils.js
+new file mode 100644
+index 0000000..51182ec
+--- /dev/null
++++ b/public/utils.js
+@@ -0,0 +1,4 @@
++// Mamo chce jquery
++// Mama: mamy jquery w domu
++// jquery w domu:
++const $ = (selector) => document.querySelector(selector)
+\ No newline at end of file
