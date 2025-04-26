@@ -39,6 +39,10 @@ Oh My Coach! Your simple personal assistant for difficult planning. Just set you
 
 ## Images
 
+![Chat](public/images/Screenshot_2025-04-26_at_15.35.43.png)
+
+TBA
+
 ## Project Overview
 
 ### Inspiration
