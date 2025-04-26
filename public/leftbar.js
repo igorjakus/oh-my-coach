@@ -4,6 +4,15 @@ function toggleDropdown() {
   if (dropdown.style.display === 'block') fetchUsers();
 }
 
+function rerenderCurrentPerson() {
+  // $(".nickname-box").innerHTML 
+}
+
+function changeCurrPersona(id, prompt) {
+  setCurrentPersona({ id, prompt })
+  rerenderCurrentPerson();
+}
+
 function fetchUsers() {
   fetch('http://localhost:8000/personalization/agents')
     .then(response => response.json())

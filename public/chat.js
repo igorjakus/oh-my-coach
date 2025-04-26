@@ -90,9 +90,10 @@ async function requestAndAwaitResponseTo(content) {
         }),
     });
     const data = await (response.text());
-    var converter = new showdown.Converter(),
-    text      = data.replace(new RegExp('\r?\n','g'), '<br />').substring(1, data.length - 2)
-    html      = converter.makeHtml(text);
+    var converter = new showdown.Converter();
+    showdown.setOption('tables', true);
+    var text      = data.replace(new RegExp('\r?\n','g'), '<br />').substring(1, data.length - 2);
+    var html      = converter.makeHtml(text);
     return html;
 }
 

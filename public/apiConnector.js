@@ -1,3 +1,14 @@
+function setCurrentPersona(persona) {
+    localStorage.setItem(
+        "persona", JSON.stringify(persona)
+    )
+}
+
+function getCurrentPersona() {
+    if (localStorage.getItem("persona")) return null;
+    return JSON.parse(localStorage.getItem("persona"));
+}
+
 function GetAllGoals() {
     return fetch(`http://localhost:8000/tasks/goals`, {
         method: 'GET',
