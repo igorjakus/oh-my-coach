@@ -311,15 +311,16 @@
     </form>
   </div>
 </div>
-
+<script src="/public/apiConnector.js"></script>
 <script>
-  document.getElementById('newUserForm').addEventListener('submit', function(e) {
+  document.getElementById('newUserForm').addEventListener('submit',async function(e) {
     e.preventDefault();
     const userData = {
       pseudonim: document.getElementById('pseudonim').value,
       description: document.getElementById('description').value,
       tone: document.getElementById('tone').value,
       taskFocus: document.getElementById('taskFocus').value,
+      motivationLevel: 3,
       language: document.getElementById('language').value,
       responseLength: document.getElementById('responseLength').value,
       humorStyle: document.getElementById('humorStyle').value,
@@ -327,7 +328,9 @@
       rewardStyle: document.getElementById('rewardStyle').value,
       feedbackStyle: document.getElementById('feedbackStyle').value
     };
-    console.log('Wysyłanie danych użytkownika:', userData);
+    console.log(userData)
+    const persona = await CreatePersonas(userData)
+    console.log('Utworzono nowego użytkownika:', persona);
     closeUserModal();
   });
 </script>  
