@@ -5,7 +5,7 @@ function toggleDropdown() {
 }
 
 function rerenderCurrentPerson() {
-  // $(".nickname-box").innerHTML 
+  $(".nickname-box").innerHTML 
 }
 
 function changeCurrPersona(id, prompt) {
