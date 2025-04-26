@@ -47,7 +47,9 @@ pre-commit install
 ```bash
 docker compose up
 ```
+## Description
 
+The application offers a personal agent who acts as both a supportive friend and a dedicated coach. It gets to know you over time, helps you stay motivated, assists in organizing your daily plans, and supports you in achieving your goals. At the end of the day, it also provides a space to clear your mind and reflect before sleep.
 
 ## Technologies
 
@@ -57,7 +59,19 @@ docker compose up
 
 ### Inspiration
 
-### What it does
+Some people live busy lives and often find themselves at the end of the day with a cluttered mind. The idea behind **Oh-My-Coach** was to provide an app where you could reflect on the events of the day, talk about your goals, worries, and anything you might usually share only with a close friend. When needed, the app enables a retrospective chat that helps you organize your thoughts and find peace of mind.
+
+### What it does?
+
+**Oh-My-Coach** is an AI agent that gradually gets to know you through regular conversations.
+
+When prompted, it consults with a specialist in a relevant field (e.g., dietitian, psychologist, personal trainer), providing them with the full context.
+
+These specialists can see your goals and track your progress. They generate a tailored response and propose a task, which you can choose to accept and add to your personal task list.
+
+The app includes a **Goals and Tasks** view, where you can track your current goals and review the tasks suggested to help you reach them.
+
+Need to clear your head? The **Retro** view allows you to talk to your agent using speech-to-speech, letting you unload your deepest thoughts in a safe space.
 
 ### How we built it
 
@@ -66,6 +80,10 @@ docker compose up
 ### What we learned
 
 ### What's next for Oh My Coach
+
+**Google Calendar Integration**: Automatically sync your tasks with Google Calendar to keep your schedule organized and stay on track.
+
+**Learning Dashboard**: A dedicated space where users can explore curated learning materials tailored to their goals and interests.
 
 ### How to run
 
