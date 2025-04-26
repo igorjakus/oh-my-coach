@@ -8,9 +8,32 @@ function fetchUsers() {
   fetch('http://localhost:8000/personalization/agents')
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+      const dropdown = document.getElementById('userDropdown');
+      dropdown.innerHTML = ''; // Wyczyść stare elementy
+
       data.forEach(user => {
-        console.log(user);
+        const userDiv = document.createElement('div');
+        userDiv.className = 'create-user-button';
+        userDiv.textContent = user.name;
+        userDiv.onclick = function() {
+          changeCurrPersona(user.id, user.prompt);
+        };
+
+        // Ukryte inputy w środku
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.value = user.id;
+        idInput.className = 'hidden-user-id';
+
+        const promptInput = document.createElement('input');
+        promptInput.type = 'hidden';
+        promptInput.value = user.prompt;
+        promptInput.className = 'hidden-user-prompt';
+
+        userDiv.appendChild(idInput);
+        userDiv.appendChild(promptInput);
+
+        dropdown.appendChild(userDiv);
       });
     })
     .catch(error => console.error('Error fetching users:', error));
