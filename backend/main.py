@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-from fastapi import FastAPI
-
-from backend.routes.health_check import health_check_router
-from backend.routes.realtime import realtime_router
-
-app = FastAPI()
-
-# Registering routers
-app.include_router(health_check_router)
-app.include_router(realtime_router)
-=======
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -19,8 +7,16 @@ from backend.config import create_db_and_tables
 from backend.routes.chat import chat_router
 from backend.routes.health_check import health_check_router
 from backend.routes.personalisation import personalization_router
+from backend.routes.realtime import realtime_router
 from backend.routes.staticFiles import router as StaticFiles_router
 from backend.routes.tasks import task_router
+
+app = FastAPI()
+
+# Registering routers
+app.include_router(health_check_router)
+app.include_router(realtime_router)
+
 
 
 @asynccontextmanager

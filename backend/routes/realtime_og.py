@@ -1,11 +1,11 @@
 import asyncio
 import json
 import logging
-import websockets
 import traceback
 
-from fastapi import WebSocket, WebSocketDisconnect, APIRouter
-from app.config import VENDOR_WS_URL, API_KEY, USE_AZURE_OPENAI
+import websockets
+from app.config import API_KEY, USE_AZURE_OPENAI, VENDOR_WS_URL
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 realtime_router = APIRouter()
 
