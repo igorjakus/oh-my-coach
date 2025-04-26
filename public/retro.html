@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=mic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=send" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,mic" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trójkolumnowy Layout</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #1d2227;
+      font-family: Arial, sans-serif;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      height: calc(100vh - 50px);
+    }
+
+    .left-panel {
+      width: 25%;
+      padding: 20px;
+      position: relative;
+      background-color: #1d2227;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .nickname-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .nickname-box {
+      background-color: #2b2f34;
+      padding: 15px 50px 15px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.2vw; /* skalowanie z szerokością */
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+
+    .profile-picture-left {
+      width: 50px;
+      height: 50px;
+      background-color: #3a3f45;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      right: -15px; /* Zmniejszono odstęp */
+      transform: translateY(-50%);
+      z-index: 2;
+      border: 3px solid #1d2227;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: #2b2f34;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      margin-top: 10px;
+      max-height: 1000; /* Maksymalna wysokość dla scrollowania */
+      overflow-y: auto; /* Włączenie scrollowania */
+      transition: all 0.3s ease;
+    }
+
+    .dropdown-item {
+      padding: 12px;
+      color: white;
+      cursor: pointer;
+      border-bottom: 1px solid #3a3f45;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .dropdown-item:hover {
+      background-color: #3a3f45;
+    }
+
+    .create-user-button {
+      padding: 12px;
+      color: white;
+      cursor: pointer;
+      text-align: center;
+      font-weight: bold;
+      background-color: #5a5f66;
+      border-radius: 8px;
+      border-top: 1px solid #3a3f45;
+      transition: background-color 0.3s ease;
+    }
+
+    .create-user-button:hover {
+      background-color: #3a3f45;
+    }
+
+    .middle-panel {
+      width: 50%;
+      background-color: #2b2f34;
+    }
+
+    .right-panel {
+      width: 25%;
+      background-color: #1d2227;
+      position: relative;
+    }
+
+    .profile-picture-right {
+      width: 60px;
+      height: 60px;
+      background-color: #5a5f66;
+      border-radius: 50%;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 2;
+      border: 3px solid #2b2f34;
+    }
+
+    .footer {
+      height: 50px;
+      background-color: #2b2f34;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid #3a3f45;
+    }
+
+    .footer div {
+      flex: 1;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 10px 0;
+      transition: background-color 0.3s;
+    }
+
+    .footer div:hover {
+      background-color: #3a3f45;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .main {
+        flex-direction: column;
+      }
+      .left-panel,
+      .middle-panel,
+      .right-panel {
+        width: 100%;
+      }
+      .nickname-box {
+        font-size: 4vw;
+      }
+      .profile-picture-left {
+        right: 10px;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/public/style.css">
+  <link rel="stylesheet" href="/public/style-retro.css">
+</head>
+<body>
+
+  <div class="main">
+    <!-- Lewa kolumna -->
+    <div class="left-panel">
+      <div class="nickname-wrapper">
+        <div class="nickname-box" onclick="toggleDropdown()">SKURWYSYN</div>
+        <div class="profile-picture-left"></div>
+        <div class="dropdown" id="userDropdown">
+          <div class="create-user-button" onclick="openUserModal()">Create New User</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Środkowa kolumna -->
+    <div class="mid-container">
+      <div class="voice-container">
+        <div class="talking-sphere">
+          <span class="material-symbols-outlined">
+            mic
+            </span>
+        </div>
+        <div class="retro-options">
+          <div class="retro-options-header">
+            Consider these points
+          </div>
+          <div class="retro-options-list">
+            <div class="retro-options-le">
+              <p> 1. Kill everyone and anyone! </p>
+              <div class="retro-checkmark">
+                <span class="material-symbols-outlined">
+                  check
+                  </span>
+              </div>
+            </div>
+            <div class="retro-options-le">
+              <p> 2. Kill everyone and anyone! </p>
+              <div class="retro-checkmark">
+                <span class="material-symbols-outlined">
+                  check
+                  </span>
+              </div>
+            </div>
+            <div class="retro-options-le">
+              <p> 3. Kill everyone and anyone! </p>
+              <div class="retro-checkmark">
+                <span class="material-symbols-outlined">
+                  check
+                  </span>
+              </div>
+            </div>
+          </div>
+          <div class="retro-options-confirm-btn">
+            Let's talk about selected options!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prawa kolumna -->
+    <div class="right-panel">
+      <div class="profile-picture-right"></div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <div class="footer">
+    <div onclick="showView('chatView')">CHAT</div>
+    <div onclick="showView('goalsView')">GOALS</div>
+    <div onclick="showView('retroView')">RETRO</div>
+    <div onclick="showView('progressView')">PROGRESS</div>
+  </div>
+<!-- <script src="/public/leftbar.js"></script> -->
+<script src="/public/utils.js"></script>
+<script src="/public/vtv.js"></script>
+</body>
+</html>

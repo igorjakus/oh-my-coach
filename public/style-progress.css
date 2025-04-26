@@ -1,0 +1,59 @@
+.mid-container {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    /* justify-content: flex-start; */
+    align-items: flex-start;
+} 
+
+.progress-box {
+    margin-top: 100px;
+    background-color: #3F414A;
+    padding: 15px;
+    border-radius: 12px;
+    width: 100%;
+}
+
+.progress-orders {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.progress-orders>img {
+    width: 80px;
+}
+
+.progress-goals-l {
+    width: 100%;
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.progress-goals-le {
+    display: flex;
+    flex-direction: column;
+}
+
+.progrees-goals-title {
+    color: #D8D8D8;
+    user-select: none;
+    font-size: 14px;
+    width: 100%;
+}
+
+.progrees-goals-bar {
+    margin-top: 5px;
+    width: 100%;
+    height: 15px;
+    background-color: #D8D8D8;
+}
+
+.progrees-goals-bar > .fill {
+    background-color: #6278b2;
+    width: 73%;
+    height: 100%;
+}
