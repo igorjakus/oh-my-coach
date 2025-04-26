@@ -27,7 +27,7 @@ def get_completion(request: ChatRequest) -> str:
         messages.append({"role": "user", "content": request.prompt})
         
         completion = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4.1",
             messages=messages
         )
         return completion.choices[0].message.content
