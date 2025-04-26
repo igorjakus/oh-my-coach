@@ -1,503 +1,468 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trójkolumnowy Layout</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trójkolumnowy Layout</title>
+    <style>
+        ::-webkit-scrollbar {
+            display: none;
+        }
 
-  <style>
-    ::-webkit-scrollbar {
-    display: none;
-}
-   .middle-panel {
-  width: 50%;
-  background-color: #2b2f34;
-  padding: 20px;
-  overflow-y: auto; /* Enable scrolling when content overflows */
-}
+        .middle-panel {
+            width: 50%;
+            background-color: #2b2f34;
+            padding: 20px;
+            overflow-y: auto; /* Enable scrolling when content overflows */
+        }
 
-.topic h3 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  color: white;
-}
+        .topic h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: white;
+        }
 
-.task-list {
-  list-style-type: none;
-  padding-left: 0;
-}
+        .task-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
 
-.task-list li {
-  margin: 10px 0;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-}
+        .task-list li {
+            margin: 10px 0;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+        }
 
-.task-list input[type="checkbox"] {
-  margin-right: 10px;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  border: 2px solid #5a5f66;
-  background-color: #1d2227;
-  position: relative;
-  cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
-}
+        .task-list input[type="checkbox"] {
+            margin-right: 10px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #5a5f66;
+            background-color: #1d2227;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
 
-.task-list input[type="checkbox"]:checked {
-  background-color: #5a5f66;
-  border-color: #5a5f66;
-}
+        .task-list input[type="checkbox"]:checked {
+            background-color: #5a5f66;
+            border-color: #5a5f66;
+        }
 
-.task-list input[type="checkbox"]:checked::after {
-  content: '\2713'; /* Unicode character for checkmark */
-  position: absolute;
-  top: -2px;
-  left: 2px;
-  font-size: 16px;
-  color: white;
-}
+        .task-list input[type="checkbox"]:checked::after {
+            content: '\2713'; /* Unicode character for checkmark */
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            font-size: 16px;
+            color: white;
+        }
 
-.task-list label {
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-}
-.task-list li {
-  margin: 10px 0;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  opacity: 1;
-  transition: opacity 1s ease-out; /* Smooth fade-out transition */
-}
+        .task-list label {
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+        }
 
-.task-list li.fade-out {
-  opacity: 0; /* Fade out the task */
-}
+        .task-list li {
+            margin: 10px 0;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            opacity: 1;
+            transition: opacity 1s ease-out; /* Smooth fade-out transition */
+        }
 
-    * {
-      box-sizing: border-box;
-    }
+        .task-list li.fade-out {
+            opacity: 0; /* Fade out the task */
+        }
 
-    body {
-      margin: 0;
-      background-color: #1d2227;
-      font-family: Arial, sans-serif;
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: row;
-    }
+        body {
+            margin: 0;
+            background-color: #1d2227;
+            font-family: Arial, sans-serif;
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .left-panel {
-      width: 25%;
-      padding: 20px;
-      position: relative;
-      background-color: #1d2227;
-      display: flex;
-      align-items: flex-start;
-    }
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+        }
 
-    .nickname-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 100%;
-    }
+        .left-panel {
+            width: 25%;
+            padding: 20px;
+            position: relative;
+            background-color: #1d2227;
+            display: flex;
+            align-items: flex-start;
+        }
 
-    .nickname-box {
-      background-color: #2b2f34;
-      padding: 15px 50px 15px 15px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 1.2vw;
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      cursor: pointer;
-    }
+        .nickname-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+        }
 
-    .profile-picture-left {
-      width: 50px;
-      height: 50px;
-      background-color: #3a3f45;
-      border-radius: 50%;
-      position: absolute;
-      top: 50%;
-      right: -15px;
-      transform: translateY(-50%);
-      z-index: 2;
-      border: 3px solid #1d2227;
-    }
+        .nickname-box {
+            background-color: #2b2f34;
+            padding: 15px 50px 15px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2vw;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
 
-    .dropdown {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background-color: #2b2f34;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      margin-top: 10px;
-      max-height: 1000;
-      overflow-y: auto;
-      transition: all 0.3s ease;
-    }
+        .profile-picture-left {
+            width: 50px;
+            height: 50px;
+            background-color: #3a3f45;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            right: -15px;
+            transform: translateY(-50%);
+            z-index: 2;
+            border: 3px solid #1d2227;
+        }
 
-    .dropdown-item {
-      padding: 12px;
-      color: white;
-      cursor: pointer;
-      border-bottom: 1px solid #3a3f45;
-      font-size: 1.1rem;
-      transition: background-color 0.3s ease;
-    }
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #2b2f34;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-top: 10px;
+            max-height: 1000;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
 
-    .dropdown-item:hover {
-      background-color: #3a3f45;
-    }
+        .dropdown-item {
+            padding: 12px;
+            color: white;
+            cursor: pointer;
+            border-bottom: 1px solid #3a3f45;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+        }
 
-    .create-user-button {
-      padding: 12px;
-      color: white;
-      cursor: pointer;
-      text-align: center;
-      font-weight: bold;
-      background-color: #5a5f66;
-      border-radius: 8px;
-      border-top: 1px solid #3a3f45;
-      transition: background-color 0.3s ease;
-    }
+        .dropdown-item:hover {
+            background-color: #3a3f45;
+        }
 
-    .create-user-button:hover {
-      background-color: #3a3f45;
-    }
+        .create-user-button {
+            padding: 12px;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            background-color: #5a5f66;
+            border-radius: 8px;
+            border-top: 1px solid #3a3f45;
+            transition: background-color 0.3s ease;
+        }
 
-    .middle-panel {
-      width: 50%;
-      background-color: #2b2f34;
-    }
+        .create-user-button:hover {
+            background-color: #3a3f45;
+        }
 
-    .right-panel {
-      width: 25%;
-      background-color: #1d2227;
-      position: relative;
-    }
+        .middle-panel {
+            width: 50%;
+            background-color: #2b2f34;
+        }
 
-    .profile-picture-right {
-      width: 60px;
-      height: 60px;
-      background-color: #5a5f66;
-      border-radius: 50%;
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      z-index: 2;
-      border: 3px solid #2b2f34;
-    }
+        .right-panel {
+            width: 25%;
+            background-color: #1d2227;
+            position: relative;
+        }
 
-    .footer {
-      height: 50px;
-      background-color: #2b2f34;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      border-top: 1px solid #3a3f45;
-    }
+        .profile-picture-right {
+            width: 60px;
+            height: 60px;
+            background-color: #5a5f66;
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
+            border: 3px solid #2b2f34;
+        }
 
-    .footer div {
-      flex: 1;
-      text-align: center;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      padding: 10px 0;
-      transition: background-color 0.3s;
-    }
+        .footer {
+            height: 50px;
+            background-color: #2b2f34;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #3a3f45;
+        }
 
-    .footer div:hover {
-      background-color: #3a3f45;
-    }
+        .footer div {
+            flex: 1;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 10px 0;
+            transition: background-color 0.3s;
+        }
 
-    @media (max-width: 768px) {
-      .main {
-        flex-direction: column;
-      }
-      .left-panel,
-      .middle-panel,
-      .right-panel {
-        width: 100%;
-      }
-      .nickname-box {
-        font-size: 4vw;
-      }
-      .profile-picture-left {
-        right: 10px;
-      }
-    }
+        .footer div:hover {
+            background-color: #3a3f45;
+        }
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.75);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        @media (max-width: 768px) {
+            .main {
+                flex-direction: column;
+            }
 
-    .modal-content {
-      background-color: #2b2f34;
-      padding: 30px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-      color: white;
-      position: relative;
-    }
+            .left-panel,
+            .middle-panel,
+            .right-panel {
+                width: 100%;
+            }
 
-    .modal-content h2 {
-      margin-top: 0;
-      margin-bottom: 20px;
-    }
+            .nickname-box {
+                font-size: 4vw;
+            }
 
-    .modal-content label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
+            .profile-picture-left {
+                right: 10px;
+            }
+        }
 
-    .modal-content input {
-      width: 100%;
-      padding: 10px;
-      background-color: #1d2227;
-      border: 1px solid #3a3f45;
-      border-radius: 6px;
-      color: white;
-      margin-top: 5px;
-    }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .modal-content button {
-      margin-top: 25px;
-      width: 100%;
-      padding: 12px;
-      background-color: #5a5f66;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
+        .modal-content {
+            background-color: #2b2f34;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+            color: white;
+            position: relative;
+        }
 
-    .modal-content button:hover {
-      background-color: #3a3f45;
-      transform: scale(1.03);
-    }
+        .modal-content h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
 
-    .modal .close {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 24px;
-      color: white;
-      cursor: pointer;
-    }
-  </style>
+        .modal-content label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            background-color: #1d2227;
+            border: 1px solid #3a3f45;
+            border-radius: 6px;
+            color: white;
+            margin-top: 5px;
+        }
+
+        .modal-content button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 12px;
+            background-color: #5a5f66;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .modal-content button:hover {
+            background-color: #3a3f45;
+            transform: scale(1.03);
+        }
+
+        .modal .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-  <div class="main">
+<div class="main">
     <div class="left-panel">
-      <div class="nickname-wrapper">
-        <div class="nickname-box" onclick="toggleDropdown()">SKURWYSYN</div>
-        <div class="profile-picture-left"></div>
-        <div class="dropdown" id="userDropdown">
-          <div class="create-user-button" onclick="openUserModal()">Create New User</div>
+        <div class="nickname-wrapper">
+            <div class="nickname-box" onclick="toggleDropdown()">SKURWYSYN</div>
+            <div class="profile-picture-left"></div>
+            <div class="dropdown" id="userDropdown">
+                <div class="create-user-button" onclick="openUserModal()">Create New User</div>
+            </div>
         </div>
-      </div>
     </div>
     <div class="middle-panel">
-  <div class="topic">
-    <h3>Temat 1</h3>
-    <ul class="task-list">
-      <li><input type="checkbox" id="task1"><label for="task1">Zadanie 1</label></li>
-      <li><input type="checkbox" id="task2"><label for="task2">Zadanie 2</label></li>
-      <li><input type="checkbox" id="task3"><label for="task3">Zadanie 3</label></li>
-    </ul>
-  </div>
-  <div class="topic">
-    <h3>Temat 2</h3>
-    <ul class="task-list">
-      <li><input type="checkbox" id="task4"><label for="task4">Zadanie 1</label></li>
-      <li><input type="checkbox" id="task5"><label for="task5">Zadanie 2</label></li>
-    </ul>
-  </div>
-  <div class="topic">
-    <h3>Temat 3</h3>
-    <ul class="task-list">
-      <li><input type="checkbox" id="task6"><label for="task6">Zadanie 1</label></li>
-      <li><input type="checkbox" id="task7"><label for="task7">Zadanie 2</label></li>
-      <li><input type="checkbox" id="task8"><label for="task8">Zadanie 3</label></li>
-    </ul>
-  </div>
-  <div class="topic">
-    <h3>Temat 1</h3>
-    <ul class="task-list">
-      <li><input type="checkbox" id="task1"><label for="task1">Zadanie 1</label></li>
-      <li><input type="checkbox" id="task2"><label for="task2">Zadanie 2</label></li>
-      <li><input type="checkbox" id="task3"><label for="task3">Zadanie 3</label></li>
-    </ul>
-  </div>
-  <div class="topic">
-    <h3>Temat 2</h3>
-    <ul class="task-list">
-      <li><input type="checkbox" id="task4"><label for="task4">Zadanie 1</label></li>
-      <li><input type="checkbox" id="task5"><label for="task5">Zadanie 2</label></li>
-    </ul>
-  </div>
-  <div class="topic">
-    <h3>Temat 3</h3>
-    <ul class="task-list">
-      <li><input type="checkbox" id="task6"><label for="task6">Zadanie 1</label></li>
-      <li><input type="checkbox" id="task7"><label for="task7">Zadanie 2</label></li>
-      <li><input type="checkbox" id="task8"><label for="task8">Zadanie 3</label></li>
-    </ul>
-  </div>
-</div>
+        <div class="topic">
+            <h3>Temat 1</h3>
+            <ul class="task-list">
+                <li><input type="checkbox" id="task1"><label for="task1">Zadanie 1</label></li>
+            </ul>
+        </div>
+        <div class="topic">
+            <h3>Temat 1</h3>
+            <ul class="task-list">
+                <li><input type="checkbox" id="task1"><label for="task1">Zadanie 1</label></li>
+            </ul>
+        </div>
+    </div>
 
     <div class="right-panel">
-      <div class="profile-picture-right"></div>
+        <div class="profile-picture-right"></div>
     </div>
-  </div>
+</div>
 
-  <div class="footer">
+<div class="footer">
     <div onclick="showView('chatView')">CHAT</div>
     <div onclick="showView('goalsView')">GOALS</div>
     <div onclick="showView('retroView')">RETRO</div>
     <div onclick="showView('progressView')">PROGRESS</div>
-  </div>
-
- <!-- MODAL FORMULARZ -->
- <div id="userModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeUserModal()">&times;</span>
-    <h2>Nowy użytkownik</h2>
-    <form id="newUserForm">
-      
-      <label for="pseudonim">Pseudonim:</label>
-      <input type="text" id="pseudonim" name="pseudonim" required>
-
-      <label for="description">Opis (max 200 znaków):</label>
-      <input type="text" id="description" name="description" maxlength="200" required>
-
-      <label for="tone">Ton:</label>
-      <select id="tone" name="tone" required>
-        <option value="friendly">Friendly</option>
-        <option value="formal">Formal</option>
-        <option value="casual">Casual</option>
-        <option value="professional">Professional</option>
-        <option value="humorous">Humorous</option>
-        <option value="serious">Serious</option>
-      </select>
-
-      <label for="taskFocus">Task Focus:</label>
-      <select id="taskFocus" name="taskFocus" required>
-        <option value="productivity">Productivity</option>
-        <option value="health">Health</option>
-        <option value="learning">Learning</option>
-        <option value="daily_habits">Daily Habits</option>
-      </select>
-
-      <label for="language">Język:</label>
-      <select id="language" name="language" required>
-        <option value="pl">Polski (PL)</option>
-        <option value="en">Angielski (EN)</option>
-      </select>
-
-      <label for="responseLength">Długość odpowiedzi:</label>
-      <select id="responseLength" name="responseLength" required>
-        <option value="short">Short</option>
-        <option value="detailed">Detailed</option>
-        <option value="flexible">Flexible</option>
-      </select>
-
-      <label for="humorStyle">Styl humoru:</label>
-      <select id="humorStyle" name="humorStyle" required>
-        <option value="none">None</option>
-        <option value="dad_jokes">Dad Jokes</option>
-        <option value="ironic">Ironic</option>
-        <option value="light">Light</option>
-      </select>
-
-      <label for="empathyLevel">Poziom empatii:</label>
-      <select id="empathyLevel" name="empathyLevel" required>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
-
-      <label for="rewardStyle">Styl nagrody:</label>
-      <select id="rewardStyle" name="rewardStyle" required>
-        <option value="enthusiastic">Enthusiastic</option>
-        <option value="moderate">Moderate</option>
-        <option value="creative">Creative</option>
-      </select>
-
-      <label for="feedbackStyle">Styl feedbacku:</label>
-      <select id="feedbackStyle" name="feedbackStyle" required>
-        <option value="positive">Positive</option>
-        <option value="constructive">Constructive</option>
-        <option value="honest">Honest</option>
-      </select>
-
-      <button type="submit">Stwórz użytkownika</button>
-    </form>
-  </div>
 </div>
-<script src="/public/apiConnector.js"></script>
+
+<!-- MODAL FORMULARZ -->
+<div id="userModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeUserModal()">&times;</span>
+        <h2>Nowy użytkownik</h2>
+        <form id="newUserForm">
+
+            <label for="pseudonim">Pseudonim:</label>
+            <input type="text" id="pseudonim" name="pseudonim" required>
+
+            <label for="description">Opis (max 200 znaków):</label>
+            <input type="text" id="description" name="description" maxlength="200" required>
+
+            <label for="tone">Ton:</label>
+            <select id="tone" name="tone" required>
+                <option value="friendly">Friendly</option>
+                <option value="formal">Formal</option>
+                <option value="casual">Casual</option>
+                <option value="professional">Professional</option>
+                <option value="humorous">Humorous</option>
+                <option value="serious">Serious</option>
+            </select>
+
+            <label for="taskFocus">Task Focus:</label>
+            <select id="taskFocus" name="taskFocus" required>
+                <option value="productivity">Productivity</option>
+                <option value="health">Health</option>
+                <option value="learning">Learning</option>
+                <option value="daily_habits">Daily Habits</option>
+            </select>
+
+            <label for="language">Język:</label>
+            <select id="language" name="language" required>
+                <option value="pl">Polski (PL)</option>
+                <option value="en">Angielski (EN)</option>
+            </select>
+
+            <label for="responseLength">Długość odpowiedzi:</label>
+            <select id="responseLength" name="responseLength" required>
+                <option value="short">Short</option>
+                <option value="detailed">Detailed</option>
+                <option value="flexible">Flexible</option>
+            </select>
+
+            <label for="humorStyle">Styl humoru:</label>
+            <select id="humorStyle" name="humorStyle" required>
+                <option value="none">None</option>
+                <option value="dad_jokes">Dad Jokes</option>
+                <option value="ironic">Ironic</option>
+                <option value="light">Light</option>
+            </select>
+
+            <label for="empathyLevel">Poziom empatii:</label>
+            <select id="empathyLevel" name="empathyLevel" required>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+
+            <label for="rewardStyle">Styl nagrody:</label>
+            <select id="rewardStyle" name="rewardStyle" required>
+                <option value="enthusiastic">Enthusiastic</option>
+                <option value="moderate">Moderate</option>
+                <option value="creative">Creative</option>
+            </select>
+
+            <label for="feedbackStyle">Styl feedbacku:</label>
+            <select id="feedbackStyle" name="feedbackStyle" required>
+                <option value="positive">Positive</option>
+                <option value="constructive">Constructive</option>
+                <option value="honest">Honest</option>
+            </select>
+
+            <button type="submit">Stwórz użytkownika</button>
+        </form>
+    </div>
+</div>
 <script>
-  document.getElementById('newUserForm').addEventListener('submit',async function(e) {
-    e.preventDefault();
-    const userData = {
-      pseudonim: document.getElementById('pseudonim').value,
-      description: document.getElementById('description').value,
-      tone: document.getElementById('tone').value,
-      taskFocus: document.getElementById('taskFocus').value,
-      motivationLevel: 3,
-      language: document.getElementById('language').value,
-      responseLength: document.getElementById('responseLength').value,
-      humorStyle: document.getElementById('humorStyle').value,
-      empathyLevel: document.getElementById('empathyLevel').value,
-      rewardStyle: document.getElementById('rewardStyle').value,
-      feedbackStyle: document.getElementById('feedbackStyle').value
-    };
-    const persona = await CreatePersonas(userData)
-    console.log('Utworzono nowego użytkownika:', persona);
-    closeUserModal();
-  });
-</script>  
+    document.getElementById('newUserForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const userData = {
+            pseudonim: document.getElementById('pseudonim').value,
+            description: document.getElementById('description').value,
+            tone: document.getElementById('tone').value,
+            taskFocus: document.getElementById('taskFocus').value,
+            language: document.getElementById('language').value,
+            responseLength: document.getElementById('responseLength').value,
+            humorStyle: document.getElementById('humorStyle').value,
+            empathyLevel: document.getElementById('empathyLevel').value,
+            rewardStyle: document.getElementById('rewardStyle').value,
+            feedbackStyle: document.getElementById('feedbackStyle').value
+        };
+        console.log('Wysyłanie danych użytkownika:', userData);
+        closeUserModal();
+    });
+</script>
 
 <script src="/public/utils.js"></script>
 <script src="/public/leftbar.js"></script>
-<script src="/public/goals.js"></script>
 </body>
 </html>
