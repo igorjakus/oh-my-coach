@@ -5,7 +5,7 @@ function toggleDropdown() {
 }
 
 function fetchUsers() {
-  fetch('localhost:8000/agents')
+  fetch('http://localhost:8000/personalization/agents')
     .then(response => response.json())
     .then(data => {
       console.log(data);
