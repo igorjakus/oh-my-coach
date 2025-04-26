@@ -1,6 +1,5 @@
 from enum import Enum
-from fastapi import APIRouter, HTTPException
-from typing import Optional
+
 
 class Tone(Enum):
     FRIENDLY = "friendly"
