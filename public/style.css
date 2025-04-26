@@ -165,3 +165,76 @@ body {
 .user-chatblock>.chat-message-header {
     flex-direction: row-reverse;
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-content {
+    background-color: #2b2f34;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    color: white;
+    position: relative;
+  }
+
+  .modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  .modal-content label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+
+  .modal-content input {
+    width: 100%;
+    padding: 10px;
+    background-color: #1d2227;
+    border: 1px solid #3a3f45;
+    border-radius: 6px;
+    color: white;
+    margin-top: 5px;
+  }
+
+  .modal-content button {
+    margin-top: 25px;
+    width: 100%;
+    padding: 12px;
+    background-color: #5a5f66;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .modal-content button:hover {
+    background-color: #3a3f45;
+    transform: scale(1.03);
+  }
+
+  .modal .close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+  }
