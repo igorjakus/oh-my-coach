@@ -1,7 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session, select, delete
+from sqlmodel import Session, delete, select
 
 from backend.brain import generate_task
 from backend.config import engine
