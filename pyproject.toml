@@ -73,7 +73,7 @@ dependencies = [
     "pgcli>=4.3.0",
     "sqlmodel>=0.0.24",
     "sqlalchemy",
-    "psycopg"
+    "psycopg2-binary>=2.9.6",  # for PostgreSQL support
 ]
 
 [dependency-groups]
