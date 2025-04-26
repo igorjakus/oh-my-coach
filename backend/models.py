@@ -3,6 +3,11 @@ from typing import Optional
 from sqlmodel import Field, SQLModel
 
 
+class PersonalisedAgent(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str
+    prompt: str
+
 class Task(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     goal_id: int  # reference to goal
