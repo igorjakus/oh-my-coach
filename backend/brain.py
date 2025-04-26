@@ -44,15 +44,15 @@ trainer_agent = create_agent(
 )
 dreamer_agent = create_agent(
     name="dreamer_agent",
-    instructions="You are dealing with user who doesn't have any goal set in their life. Give propositions of such goals that are suitable to the user, maybe by asking additional questions.",
+    instructions="You are dealing with user who doesn't have any goal set in their life. Give propositions of such goals that are suitable to the user.",
 )
 nutritionist_agent = create_agent(
     name="nutritionist_agent",
-    instructions="You are a nutritionist. Based on user's story give some eating advice, maybe by asking additional questions.",
+    instructions="You are a nutritionist. Based on user's story give some eating advice.",
 )
 entertainer_agent = create_agent(
     name="entertainer_agent",
-    instructions="You are supposed to entertain the user. You can do this by recommending movies, books, games ect. based on their story, maybe by asking additional questions.",
+    instructions="You are supposed to entertain the user. You can do this by recommending movies, books, games ect. based on their story.",
 )
 
 
@@ -66,20 +66,32 @@ class AgentTask(BaseModel):
 
 task_manager_agent = create_agent(
     name="task_manager_agent",
-    instructions="""You are a task generation expert that helps break down goals into actionable tasks. 
-    Tasks should be diverse and be focused on exploring new ideas about the topic rather than reviewing.
+    instructions="""You are a task generation expert that helps break down goals into simple tasks.
 
     For each task, you should provide:
     - A clear, concise name
-    - A detailed description explaining what needs to be done
+    - A short task description
     - An estimated duration in minutes
-    - A priority level from 1 (lowest) to 5 (highest) based on task importance
+    - A priority level [1, 5]
 
     Consider the context of previous tasks when generating new ones to ensure proper task sequencing.
     Apply pareto rule.""",
-    output_type=AgentTask
+    output_type=AgentTask,
 )
-goal_manager_agent = create_agent(name="goal_manager_agent", instructions="You are giving goals.", output_type=Goal)
+
+goal_manager_agent = create_agent(
+    name="goal_manager_agent",
+    instructions="""
+    You are a goal generation expert that helps create goals.
+
+    You should provide:
+    - A clear, concise name
+    - A short goal description
+    - An estimated duration in minutes
+    - A priority level [1, 5]
+    """,
+    output_type=AgentTask,
+)
 
 versatile_agent = create_agent(
     name="versatile_agent", instructions="You are trying to keep the conversation with the user flowing."
@@ -92,23 +104,22 @@ expert_agent = create_agent(
 
 triage_agent = Agent(
     name="Coach",
-    instructions=prompt_with_handoff_instructions("""
-You are the virtual coach. Welcome the user and ask how you can help.
-Based on the user's intent, route to:
-- friend_agent for friendly conversations
-- psychotherapist_agent for mental health advice
-- physiotherapist_agent for physical health advice
-- coach_agent for general advice
-- motivator_agent for motivating
-- trainer_agent for fitness advice
-- dreamer_agent for goal suggestions
-- nutritionist_agent for eating advice
-- entertainer_agent for entertainment generation
-- task_manager_agent for managing tasks
-- goal_manager_agent for managing goals
-- expert_agent for anything requiring real-time web search
-- versatile_agent for any unrelated queries, just continue the conversation
-"""),
+    instructions=prompt_with_handoff_instructions("""You are the virtual coach. Welcome the user and ask how you can help.
+    Based on the user's intent, route to:
+    - friend_agent for friendly conversations
+    - psychotherapist_agent for mental health advice
+    - physiotherapist_agent for physical health advice
+    - coach_agent for general advice
+    - motivator_agent for motivating
+    - trainer_agent for fitness advice
+    - dreamer_agent for goal suggestions
+    - nutritionist_agent for eating advice
+    - entertainer_agent for entertainment generation
+    - task_manager_agent for generating tasks
+    - goal_manager_agent for generating goals
+    - expert_agent for anything requiring real-time web search
+    - versatile_agent for any unrelated queries, just continue the conversation
+    """),
     handoffs=[
         friend_agent,
         psychotherapist_agent,
@@ -144,18 +155,16 @@ async def generate_task(goal_id: int, previous_tasks: list[Task]) -> Task:
         context = f"Goal: {goal.name}\nDescription: {goal.description}\n"
         if previous_tasks:
             context += "\nPrevious tasks:\n" + "\n".join(
-                [f"- {task.name}: {task.description}" for task in previous_tasks])
+                [f"- {task.name}: {task.description}" for task in previous_tasks]
+            )
 
-        result = await Runner.run(
-            task_manager_agent,
-            f"Generate the next task for this goal: {context}"
-        )
+        result = await Runner.run(task_manager_agent, f"Generate the next task for this goal: {context}")
 
         return result.final_output  # task_manager_agent will return Task object since we set output_type=Task
 
 
 def get_response_from_best_agent(
-        query: str,
+    query: str,
 ) -> str:
     """
     Get a response from the best agent based on the query.
