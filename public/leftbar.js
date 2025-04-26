@@ -35,17 +35,6 @@ window.addEventListener("click", function(event) {
   if (event.target === modal) closeUserModal();
 });
 
-document.getElementById('newUserForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const userData = {
-    name: document.getElementById('name').value,
-    personality: document.getElementById('personality').value,
-    speechStyle: document.getElementById('speechStyle').value,
-    addressStyle: document.getElementById('addressStyle').value
-  };
-  console.log('Wysyłanie danych użytkownika:', userData);
-  closeUserModal();
-});
 
 function adjustDropdownHeight() {
   const dropdown = document.getElementById('userDropdown');
