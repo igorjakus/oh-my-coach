@@ -1,23 +1,19 @@
 import asyncio
-import os
 from typing import Optional
 
 from agents import Agent, Runner, WebSearchTool, set_default_openai_key, trace
 from agents.extensions.handoff_prompt import prompt_with_handoff_instructions
-from dotenv import load_dotenv
 from fastapi import HTTPException
 from openai import OpenAI
 from pydantic import BaseModel
 from sqlmodel import Session
 
-from backend.config import engine
+from backend.config import API_KEY, engine
 from backend.models import Goal, Task
 
-load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
-set_default_openai_key(api_key)
+set_default_openai_key(API_KEY)
 
-client = OpenAI(api_key=api_key)
+client = OpenAI(api_key=API_KEY)
 
 
 def create_agent(name="", model="gpt-4.1", instructions="", tools=[], output_type=None):
@@ -154,6 +150,23 @@ async def generate_task(goal_id: int, previous_tasks: list[Task]) -> Task:
         )
         
         return result.final_output  # task_manager_agent will return Task object since we set output_type=Task
+
+
+def get_response_from_best_agent(
+    query: str,
+) -> str:
+    """
+    Get a response from the best agent based on the query.
+    Args:
+        query: User's query
+    Returns:
+        str: Response from the best agent
+    """
+    result = Runner.run(triage_agent, query)
+    if result.final_output:
+        return result.final_output
+    else:
+        raise HTTPException(status_code=500, detail="No suitable agent found")
 
 
 async def test_queries():

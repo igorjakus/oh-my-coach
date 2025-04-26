@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from openai import OpenAI
 from pydantic import BaseModel
 
+from backend.brain import get_response_from_best_agent
 from backend.config import API_KEY
 
 chat_router = APIRouter()
@@ -34,3 +35,9 @@ def get_completion(request: ChatRequest) -> str:
         return completion.choices[0].message.content
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@chat_router.post("/triage", response_model=str)
+def get_triage_response(request: ChatRequest) -> str:
+    query = "".join([msg.content for msg in request.history]) + request.prompt
+    return get_response_from_best_agent(query)
