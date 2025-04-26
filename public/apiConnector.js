@@ -60,8 +60,8 @@ async function CreatePersonas(personaJSON)
 {
     // Construct query parameters from the personaJSON object
     const queryParams = new URLSearchParams({
-        pseudonym: personaJSON.pseudonym,
-        personality: personaJSON.personality,
+        pseudonym: personaJSON.pseudonim,
+        personality: personaJSON.description,
         tone: personaJSON.tone,
         motivation_level: personaJSON.motivationLevel,
         task_focus: personaJSON.taskFocus,
@@ -72,8 +72,8 @@ async function CreatePersonas(personaJSON)
         reward_style: personaJSON.rewardStyle || 'moderate', // Default if not provided
         feedback_type: personaJSON.feedbackType || 'constructive' // Default if not provided
     }).toString();
-
-    return await fetch(`http://localhost:8000/personalization/create_agent?${queryParams}`, {
+    console.log(queryParams)
+    const request = await fetch(`http://localhost:8000/personalization/create_agent?${queryParams}`, {
         method: 'POST',
         headers: {
             // No Content-Type needed for query parameters in POST
@@ -81,4 +81,6 @@ async function CreatePersonas(personaJSON)
         }
         // Body is not needed as parameters are in the URL
     })
+
+    return await (request.json());
 }

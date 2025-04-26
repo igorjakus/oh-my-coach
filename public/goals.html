@@ -490,6 +490,7 @@
       rewardStyle: document.getElementById('rewardStyle').value,
       feedbackStyle: document.getElementById('feedbackStyle').value
     };
+    console.log(userData)
     const persona = await CreatePersonas(userData)
     console.log('Utworzono nowego użytkownika:', persona);
     closeUserModal();
