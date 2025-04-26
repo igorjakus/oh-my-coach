@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=mic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=send" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,mic" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Trójkolumnowy Layout</title>
@@ -24,6 +26,7 @@
       flex: 1;
       display: flex;
       flex-direction: row;
+      height: calc(100vh - 50px);
     }
 
     .left-panel {
@@ -175,10 +178,9 @@
       }
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="/public/style.css">
-  <link rel="stylesheet" href="/public/style-chat.css">
+  <link rel="stylesheet" href="/public/style-progress.css">
 </head>
 <body>
 
@@ -197,26 +199,41 @@
     </div>
 
     <!-- Środkowa kolumna -->
-    <div class="mid-container" style="max-height: 90vh;">
-      <div class="chat-content">
-          <div class="bot-chatblock chatblock">
-              <div class="chat-message-header">
-                  <div class="chat-profile-picture"></div>
-                  <div class="chat-profile-nickname">Skurwysyn</div>
-              </div>
-              <div class="chat-message-content">
-                  Example chatbox reponse from one of our agents. Another sentence - even longer sentence <br>
-                  Lores ipsum do
-              </div>
+    <div class="mid-container">
+      <div class="progress-box">
+        <div class="progress-orders">
+          <img src="/public/images/OpenAI Playground 2025-04-26 at 05.52.21.png"/>
+          <img src="/public/images/OpenAI Playground 2025-04-26 at 05.55.48.png"/>
+          <img src="/public/images/OpenAI Playground 2025-04-26 at 05.49.48.png"/>
+          <img src="/public/images/OpenAI Playground 2025-04-26 at 06.08.43.png"/>
+          <img src="/public/images/OpenAI Playground 2025-04-26 at 06.10.12.png"/>
+        </div>
+        <div class="progress-goals-l">
+          <div class="progress-goals-le">
+            <div class="progrees-goals-title">
+              1. Lores ipsum abc abc edb eij aov
+            </div>
+            <div data-progress="20" class="progrees-goals-bar">
+              <div class="fill"></div>
+            </div>
           </div>
-          <div class="user-chatblock chatblock">
+          <div class="progress-goals-le">
+            <div class="progrees-goals-title">
+              2. Lores ipsum abc abc edb eij aov
+            </div>
+            <div data-progress="60" class="progrees-goals-bar">
+              <div class="fill"></div>
+            </div>
           </div>
-      </div>
-      <div class="chat-box">
-          <input placeholder="Tell me about you goals" class="chat-box-input" type="text" name="" id="">
-          <span class="send-icon material-symbols-outlined">
-              send
-          </span>
+          <div class="progress-goals-le">
+            <div class="progrees-goals-title">
+              3. Lores ipsum abc abc edb eij aov
+            </div>
+            <div data-progress="30" class="progrees-goals-bar">
+              <div class="fill"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -233,9 +250,12 @@
     <div onclick="showView('retroView')">RETRO</div>
     <div onclick="showView('progressView')">PROGRESS</div>
   </div>
-
-<!-- <script src="/public/leftbar.js"></script> -->
+<script src="/public/leftbar.js"></script>
 <script src="/public/utils.js"></script>
-<script src="/public/chat.js"></script>
+<script>
+for ( const el of document.querySelectorAll(".progrees-goals-bar") ) {
+  el.children[0].style.width = `${el.dataset.progress}%`
+}
+</script>
 </body>
 </html>

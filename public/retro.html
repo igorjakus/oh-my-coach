@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=mic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=send" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,mic" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Trójkolumnowy Layout</title>
@@ -24,6 +26,7 @@
       flex: 1;
       display: flex;
       flex-direction: row;
+      height: calc(100vh - 50px);
     }
 
     .left-panel {
@@ -175,10 +178,9 @@
       }
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="/public/style.css">
-  <link rel="stylesheet" href="/public/style-chat.css">
+  <link rel="stylesheet" href="/public/style-retro.css">
 </head>
 <body>
 
@@ -189,34 +191,53 @@
         <div class="nickname-box" onclick="toggleDropdown()">SKURWYSYN</div>
         <div class="profile-picture-left"></div>
         <div class="dropdown" id="userDropdown">
-          <!-- Dropdown items will be injected here -->
-          <!-- Hardcoded "Create New User" button -->
-          <div class="create-user-button" onclick="redirectToCreateUser()">Create New User</div>
+          <div class="create-user-button" onclick="openUserModal()">Create New User</div>
         </div>
       </div>
     </div>
 
     <!-- Środkowa kolumna -->
-    <div class="mid-container" style="max-height: 90vh;">
-      <div class="chat-content">
-          <div class="bot-chatblock chatblock">
-              <div class="chat-message-header">
-                  <div class="chat-profile-picture"></div>
-                  <div class="chat-profile-nickname">Skurwysyn</div>
-              </div>
-              <div class="chat-message-content">
-                  Example chatbox reponse from one of our agents. Another sentence - even longer sentence <br>
-                  Lores ipsum do
-              </div>
+    <div class="mid-container">
+      <div class="voice-container">
+        <div class="talking-sphere">
+          <span class="material-symbols-outlined">
+            mic
+            </span>
+        </div>
+        <div class="retro-options">
+          <div class="retro-options-header">
+            Consider these points
           </div>
-          <div class="user-chatblock chatblock">
+          <div class="retro-options-list">
+            <div class="retro-options-le">
+              <p> 1. Kill everyone and anyone! </p>
+              <div class="retro-checkmark">
+                <span class="material-symbols-outlined">
+                  check
+                  </span>
+              </div>
+            </div>
+            <div class="retro-options-le">
+              <p> 2. Kill everyone and anyone! </p>
+              <div class="retro-checkmark">
+                <span class="material-symbols-outlined">
+                  check
+                  </span>
+              </div>
+            </div>
+            <div class="retro-options-le">
+              <p> 3. Kill everyone and anyone! </p>
+              <div class="retro-checkmark">
+                <span class="material-symbols-outlined">
+                  check
+                  </span>
+              </div>
+            </div>
           </div>
-      </div>
-      <div class="chat-box">
-          <input placeholder="Tell me about you goals" class="chat-box-input" type="text" name="" id="">
-          <span class="send-icon material-symbols-outlined">
-              send
-          </span>
+          <div class="retro-options-confirm-btn">
+            Let's talk about selected options!
+          </div>
+        </div>
       </div>
     </div>
 
@@ -233,9 +254,8 @@
     <div onclick="showView('retroView')">RETRO</div>
     <div onclick="showView('progressView')">PROGRESS</div>
   </div>
-
 <!-- <script src="/public/leftbar.js"></script> -->
 <script src="/public/utils.js"></script>
-<script src="/public/chat.js"></script>
+<script src="/public/vtv.js"></script>
 </body>
 </html>

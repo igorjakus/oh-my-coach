@@ -1,0 +1,95 @@
+.mid-container {
+    border-radius: 12px;
+    height: 80%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.voice-container {
+    width: 70%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.talking-sphere {
+    width: 50%;
+    aspect-ratio: 1;
+    background-color: white;
+    opacity: 0.8;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    transition: 0.2s all;
+    border-radius: 50%;
+    outline-style: solid;
+    outline-color: #9194b026;
+}
+
+.talking-sphere>span {
+    cursor: pointer;
+    user-select: none;
+    font-size: 800%;
+}
+
+
+.retro-options {
+    /* margin-top: 75px; */
+    width: 75%;
+    font-size: 13px;
+    color: #c7c8d2;
+    transition: 0.2s opacity;
+}
+
+.retro-options-list {
+    padding-top: 5px;
+    padding-left: 10px;
+}
+
+.retro-options-le {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    /* margin-top: 10px; */
+    color: #ffffff;
+    padding: 5px;
+}
+
+.retro-checkmark {
+    width: 30px;
+    height: 30px;
+    background-color: #7B7F98;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.retro-checkmark>span {
+    user-select: none;
+
+}
+
+.retro-options-confirm-btn {
+    /* margin-top: 25px; */
+    width: 100%;
+    background-color: #a2a6c3;
+    padding: 15px;
+    color: #393b49;
+    border-radius: 12px;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
