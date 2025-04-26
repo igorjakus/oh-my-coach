@@ -102,9 +102,12 @@ for ( const checkmark of checkMarks ) {
     }, false)  
 }
 
-$(".retro-options-confirm-btn").addEventListener("click", () => {
-    $(".retro-options").style.opacity = 0;
+function initCall() {
+    $(".talking-sphere").removeEventListener("click", initCall)
+    // $(".retro-options").style.opacity = 0;
     $(".talking-sphere").style.opacity = 1;
     $(".talking-sphere").style.outlineWidth = '40px';
     init();
-})
+}
+
+$(".talking-sphere").addEventListener("click", initCall)

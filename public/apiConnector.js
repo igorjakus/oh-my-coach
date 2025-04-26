@@ -5,9 +5,10 @@ function setCurrentPersona(persona) {
 }
 
 function getCurrentPersona() {
-    if (localStorage.getItem("persona")) return null;
+    if (!localStorage.getItem("persona")) return null;
     return JSON.parse(localStorage.getItem("persona"));
 }
+
 
 function GetAllGoals() {
     return fetch(`http://localhost:8000/tasks/goals`, {
@@ -19,6 +20,18 @@ function GetAllGoals() {
     .then(response => response.json())
     .catch(error => console.error('Error:', error));
 }
+
+function GetPersonaById(id) {
+    return fetch(`http://localhost:8000/personalization/agent/${id}`, {
+        method: 'GET',
+        headers: {
+            
+        }
+    })
+    .then(response => response.json())
+    .catch(error => console.error('Error:', error));
+}
+
 
 
 function GetAllTasksInGoal(goalId) {

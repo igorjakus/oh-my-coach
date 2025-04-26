@@ -51,6 +51,13 @@ function addAsChatbotToChat(name, messageContent, timestamp, profilePicuteURL) {
     window.chatHistory = mergeNeighbouringMessages(window.chatHistory);
 }
 
+async function addAsCurrentChatbotToChat(messageContent, timestamp) {
+    const persona = getCurrentPersona();
+    if (!persona) return; 
+    const personafull = await GetPersonaById(persona.id)
+    addAsChatbotToChat(personafull.name, messageContent, timestamp)
+}
+
 function addAsUserToChat(messageContent, timestamp, profilePicuteURL) {
     window.chatHistory.push(new ChatEntry(
         timestamp == null ? Date.now() : timestamp,
@@ -129,3 +136,5 @@ function registerChatControlls() {
 };
 
 registerChatControlls();
+addAsCurrentChatbotToChat("What's up? how can I help you 😊", Date.now())
+    .then(rerenderMessagesInChat)

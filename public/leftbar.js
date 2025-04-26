@@ -4,9 +4,13 @@ function toggleDropdown() {
   if (dropdown.style.display === 'block') fetchUsers();
 }
 
-function rerenderCurrentPerson() {
-  $(".nickname-box").innerHTML 
+async function rerenderCurrentPerson() {
+  const persona = getCurrentPersona();
+  if (!persona) return;
+  const personaFull = await GetPersonaById(persona.id);
+  $(".nickname-box").innerHTML = personaFull.name;
 }
+rerenderCurrentPerson();
 
 function changeCurrPersona(id, prompt) {
   setCurrentPersona({ id, prompt })
@@ -19,13 +23,15 @@ function fetchUsers() {
     .then(data => {
       const dropdown = document.getElementById('userDropdown');
       dropdown.innerHTML = ''; // Wyczyść stare elementy
-
+      dropdown.innerHTML += 
+        `<div class="create-user-button" onclick="openUserModal()">Create New User</div>`
       data.forEach(user => {
         const userDiv = document.createElement('div');
         userDiv.className = 'create-user-button';
         userDiv.textContent = user.name;
         userDiv.onclick = function() {
           changeCurrPersona(user.id, user.prompt);
+          toggleDropdown();
         };
 
         // Ukryte inputy w środku
