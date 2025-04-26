@@ -23,6 +23,7 @@ const mockupResponses = [
 ];
 
 let mockupCounter = 0; // Counter for mockup responses
+let waitingForResponse = false;
 
 function getChatMessageComponentFromData(chatEntry) {
     return `<div class="${chatEntry.fromUser ? "user-chatblock" : "bot-chatblock"} chatblock">
@@ -81,28 +82,40 @@ function rerenderMessagesInChat() {
     document.querySelector(".chat-content").scrollTop = document.querySelector(".chat-content").scrollHeight;
 }
 
-function respondMockup(content) {
-    let responseText = "";
+function respondMockup() {
     if (mockupCounter < mockupResponses.length) {
-        responseText = mockupResponses[mockupCounter];
-        mockupCounter++;
+        return mockupResponses[mockupCounter++];
     } else {
-        responseText = "I'm ready for your next question! 🚀";
+        return "I'm ready for your next question! 🚀";
     }
-    return responseText;
 }
 
-function handleMessageSend() {
-    const content = document.querySelector(".chat-box-input").value.trim();
-    if (content.length < 1) return;
-    document.querySelector(".chat-box-input").value = "";
+async function handleMessageSend() {
+    if (waitingForResponse) return;
 
+    const input = document.querySelector(".chat-box-input");
+    const content = input.value.trim();
+    if (content.length < 1) return;
+
+    input.value = "";
     addAsUserToChat(content);
     rerenderMessagesInChat();
 
-    const response = respondMockup(content);
-    addAsChatbotToChat("Bot", response);
-    rerenderMessagesInChat();
+    waitingForResponse = true;
+    document.querySelector(".send-icon").style.opacity = 0.5;
+    input.disabled = true;
+
+    // Fake delay for response
+    setTimeout(() => {
+        const botResponse = respondMockup();
+        addAsChatbotToChat("Bot", botResponse);
+        rerenderMessagesInChat();
+
+        waitingForResponse = false;
+        document.querySelector(".send-icon").style.opacity = 1;
+        input.disabled = false;
+        input.focus();
+    }, 1000); // 1000ms = 1 second
 }
 
 function registerChatControlls() {
