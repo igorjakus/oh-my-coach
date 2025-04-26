@@ -250,6 +250,104 @@
     <div onclick="showView('retroView')">RETRO</div>
     <div onclick="showView('progressView')">PROGRESS</div>
   </div>
+
+   <!-- MODAL FORMULARZ -->
+<div id="userModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeUserModal()">&times;</span>
+    <h2>Nowy użytkownik</h2>
+    <form id="newUserForm">
+      
+      <label for="pseudonim">Pseudonim:</label>
+      <input type="text" id="pseudonim" name="pseudonim" required>
+
+      <label for="description">Opis (max 200 znaków):</label>
+      <input type="text" id="description" name="description" maxlength="200" required>
+
+      <label for="tone">Ton:</label>
+      <select id="tone" name="tone" required>
+        <option value="friendly">Friendly</option>
+        <option value="formal">Formal</option>
+        <option value="casual">Casual</option>
+        <option value="professional">Professional</option>
+        <option value="humorous">Humorous</option>
+        <option value="serious">Serious</option>
+      </select>
+
+      <label for="taskFocus">Task Focus:</label>
+      <select id="taskFocus" name="taskFocus" required>
+        <option value="productivity">Productivity</option>
+        <option value="health">Health</option>
+        <option value="learning">Learning</option>
+        <option value="daily_habits">Daily Habits</option>
+      </select>
+
+      <label for="language">Język:</label>
+      <select id="language" name="language" required>
+        <option value="pl">Polski (PL)</option>
+        <option value="en">Angielski (EN)</option>
+      </select>
+
+      <label for="responseLength">Długość odpowiedzi:</label>
+      <select id="responseLength" name="responseLength" required>
+        <option value="short">Short</option>
+        <option value="detailed">Detailed</option>
+        <option value="flexible">Flexible</option>
+      </select>
+
+      <label for="humorStyle">Styl humoru:</label>
+      <select id="humorStyle" name="humorStyle" required>
+        <option value="none">None</option>
+        <option value="dad_jokes">Dad Jokes</option>
+        <option value="ironic">Ironic</option>
+        <option value="light">Light</option>
+      </select>
+
+      <label for="empathyLevel">Poziom empatii:</label>
+      <select id="empathyLevel" name="empathyLevel" required>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+
+      <label for="rewardStyle">Styl nagrody:</label>
+      <select id="rewardStyle" name="rewardStyle" required>
+        <option value="enthusiastic">Enthusiastic</option>
+        <option value="moderate">Moderate</option>
+        <option value="creative">Creative</option>
+      </select>
+
+      <label for="feedbackStyle">Styl feedbacku:</label>
+      <select id="feedbackStyle" name="feedbackStyle" required>
+        <option value="positive">Positive</option>
+        <option value="constructive">Constructive</option>
+        <option value="honest">Honest</option>
+      </select>
+
+      <button type="submit">Stwórz użytkownika</button>
+    </form>
+  </div>
+</div>
+<script>
+  document.getElementById('newUserForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const userData = {
+      pseudonim: document.getElementById('pseudonim').value,
+      description: document.getElementById('description').value,
+      tone: document.getElementById('tone').value,
+      taskFocus: document.getElementById('taskFocus').value,
+      language: document.getElementById('language').value,
+      responseLength: document.getElementById('responseLength').value,
+      humorStyle: document.getElementById('humorStyle').value,
+      empathyLevel: document.getElementById('empathyLevel').value,
+      rewardStyle: document.getElementById('rewardStyle').value,
+      feedbackStyle: document.getElementById('feedbackStyle').value
+    };
+    console.log('Wysyłanie danych użytkownika:', userData);
+    closeUserModal();
+  });
+</script>  
+
 <script src="/public/leftbar.js"></script>
 <script src="/public/utils.js"></script>
 <script>

@@ -28,7 +28,6 @@ function openUserModal() {
 
 function closeUserModal() {
   document.getElementById("userModal").style.display = "none";
-  console.log("miau");
 }
 
 window.addEventListener("click", function(event) {
