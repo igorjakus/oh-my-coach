@@ -102,16 +102,16 @@ Based on the user's intent, route to:
 
 async def test_queries():
     examples = [
-        "24342423?",  # versatile agent test
+        # "24342423?",  # versatile agent test
         "Ooh i've got money to spend! What can I buy?",  # Advisor agent test
-        "Hmmm, what about duck hunting gear - what's trending right now?",  # Search Agent test
+        # "Hmmm, what about duck hunting gear - what's trending right now?",  # Search Agent test
     ]
 
     with trace("Coach App"):
         for query in examples:
             result = await Runner.run(triage_agent, query)
             print(f"User: {query}")
-            print(result.final_output)
+            print(f"Answer: {result.final_output}")
             print("---")
 
 
