@@ -45,6 +45,9 @@ psql postgres -c "CREATE USER hackathon WITH PASSWORD 'hackathon';" && \
 psql postgres -c "CREATE DATABASE hackathon OWNER hackathon;"
 ```
 
+**Database Structure**
+![Database Structure](docs/database-design.png)
+
 ### Run backend
 ```bash
 fastapi dev backend/main.py
