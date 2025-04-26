@@ -18,6 +18,14 @@ def get_session():
 
 # ========== ENDPOINTS ==============
 # ========== GET ENDPOINTS ==========
+@task_router.get("/goals", response_model=List[GoalRead])
+async def get_all_goals(session: Session = Depends(get_session)):
+    """Get all goals from the database"""
+    statement = select(Goal)
+    goals = session.exec(statement).all()
+    return goals
+
+
 @task_router.get("/tasks/{task_id}", response_model=TaskRead)
 async def read_task(task_id: int, session: Session = Depends(get_session)):
     # Read task by ID
