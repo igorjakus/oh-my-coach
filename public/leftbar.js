@@ -5,18 +5,12 @@ function toggleDropdown() {
 }
 
 function fetchUsers() {
-  fetch('https://your-backend-endpoint.com/users')
+  fetch('localhost:8000/agents')
     .then(response => response.json())
     .then(data => {
-      const dropdown = document.getElementById('userDropdown');
-      const createButton = dropdown.querySelector('.create-user-button');
-      dropdown.innerHTML = '';
-      dropdown.appendChild(createButton);
-      data.users.forEach(user => {
-        const item = document.createElement('div');
-        item.className = 'dropdown-item';
-        item.textContent = user.name;
-        dropdown.appendChild(item);
+      console.log(data);
+      data.forEach(user => {
+        console.log(user);
       });
     })
     .catch(error => console.error('Error fetching users:', error));
@@ -120,6 +114,8 @@ middlePanel.style.maxHeight = `${availableHeight}px`;
 window.addEventListener('load', adjustPanelHeight);
 window.addEventListener('resize', adjustPanelHeight);
 
+
 window.addEventListener('load', adjustDropdownHeight);
 window.addEventListener('load', closeUserModal);
 window.addEventListener('resize', adjustDropdownHeight);
+window.addEventListener('load', fetchUsers);
